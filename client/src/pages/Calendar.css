@@ -1,0 +1,20 @@
+.e-disableCell {
+  border: none !important;
+  /* border-color: rgb(252, 245, 245) !important; */
+  /* color: rgba(0, 0, 0, 0.54) !important; */
+  background-color: #bebebe !important;
+}
+
+.e-schedule .e-month-view .e-current-date .e-date-header,
+.e-schedule .e-month-agenda-view .e-current-date .e-date-header {
+  background-color: blue !important;
+}
+.e-schedule .e-month-view .e-date-header-wrap table td.e-current-day,
+.e-schedule .e-month-agenda-view .e-date-header-wrap table td.e-current-day {
+  color: blue !important;
+}
+
+.e-schedule .e-schedule-toolbar .e-active-view .e-tbar-btn-text,
+.e-schedule .e-schedule-toolbar .e-active-view .e-icons {
+  color: blue !important;
+}
