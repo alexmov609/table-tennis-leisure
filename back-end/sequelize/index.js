@@ -1,13 +1,20 @@
 const { Sequelize } = require("sequelize");
 const additonalSettings = require("./additional-settings");
+require("dotenv").config();
 //DataBase setting
-const DBConnection = new Sequelize("table_tennis", "root", "", {
-  dialect: "mysql",
-  host: "localhost",
-  define: {
-    timestamps: false,
-  },
-});
+console.log(process.env.DATABASE_USERNAME);
+const DBConnection = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USERNAME,
+  process.env.DATABASE_PASSWORD,
+  {
+    dialect: "mysql",
+    host: "localhost",
+    define: {
+      timestamps: false,
+    },
+  }
+);
 
 const modelsArray = [
   require("./models/user"),

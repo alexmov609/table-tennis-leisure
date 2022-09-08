@@ -1,16 +1,15 @@
 const jwt = require("jsonwebtoken");
 const DBManager = require("../sequelize");
 const { user } = DBManager.models;
+require("dotenv").config();
+
 //Function that verifies jwtToken
 verifyToken = (request, response, next) => {
   let csrfToken = request.get("x-xsrf-token");
   let jwtToken = request.cookies["jwtRefreshToken"];
   if (!jwtToken) return response.status(403).send("verify Token required ");
 
-  //--------------
-  const secret = "secret";
-  //--------------
-  jwt.verify(jwtToken, secret, (err, decoded) => {
+  jwt.verify(jwtToken, process.env.JWT_TOKEN, (err, decoded) => {
     if (err) response.status(500).send("Authentication failed");
     request.user_id = decoded.user_id;
 

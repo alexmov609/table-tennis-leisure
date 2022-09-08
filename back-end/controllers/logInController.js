@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { comparePassword } = require("../services/encrypt_service");
+require("dotenv").config();
 
 const DBManager = require("../sequelize");
 const { users } = DBManager.models;
@@ -30,13 +30,17 @@ const handleLogIn = async (request, response) => {
 
   const { authorities, user_id, theme } = receivedUser;
   const csrfToken = request.get("x-xsrf-token");
-  const accessToken = jwt.sign({ user_id, sub: csrfToken }, "secret", {
-    expiresIn: "1min",
-  });
+  const accessToken = jwt.sign(
+    { user_id, sub: csrfToken },
+    process.env.JWT_TOKEN,
+    {
+      expiresIn: "1min",
+    }
+  );
 
   const refreshToken = jwt.sign(
     { authorities, sub: csrfToken, user_id },
-    "secret",
+    process.env.JWT_TOKEN,
     {
       expiresIn: "1d",
     }

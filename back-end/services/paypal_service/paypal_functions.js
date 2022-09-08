@@ -1,4 +1,5 @@
 const paypal = require("@paypal/checkout-server-sdk");
+require("dotenv").config();
 const controllers = require("../../controllers");
 const DBManager = require("../../sequelize");
 const { Op } = require("sequelize");
@@ -11,8 +12,8 @@ const {
 //PayPal Sandbox back-end order processing
 const paypalClient = new paypal.core.PayPalHttpClient(
   new SandboxEnvironment(
-    "AS0OqNuRZFR0b-cAkF0yAexH3YMgbHEtKuS9AaKYtB-h07u9ClmjsBA5fApUg9eoI_452u3ytMPaSjhh",
-    "ENs865wPNaOYVYKYQmL_pYOQaay-QCli4Qiz-Bznd5QYFOP6DMKH3RzVwL7mHelK_luDfKjJPECKttDE"
+    process.env.PAYPAL_CLIENT_ID,
+    process.env.PAYPAL_CLIENT_SECRET
   )
 );
 
