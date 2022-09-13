@@ -10,12 +10,12 @@ const alteredWorkScheduleRoutes = require("./alteredWorkScheduleRoutes");
 // const timePeriodsRoutes = require("./timePeriodsRoutes");
 const adminRoutes = require("./adminRoutes");
 const payPalRoutes = require("./payPalRoutes");
-const verifiers = require("../middleware/verifyJWT");
+const verifiers = require("../middleware");
 const router = express.Router();
 
 const routersInitializer = (router) => {
   authRoutes(router);
-  router.use(verifiers.verifyToken);
+  router.use(verifiers.verifyJWT);
   userRoutes(router);
   abonementRoutes(router);
   ordersRoutes(router);
@@ -24,8 +24,9 @@ const routersInitializer = (router) => {
   basicWorkScheduleRoutes(router);
   alteredWorkScheduleRoutes(router);
   // timePeriodsRoutes(router);
-  adminRoutes(router);
   payPalRoutes(router);
+  router.use(verifiers.isAdmin);
+  adminRoutes(router);
 };
 
 routersInitializer(router);

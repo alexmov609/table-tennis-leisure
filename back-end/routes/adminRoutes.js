@@ -19,7 +19,6 @@ const adminRoutes = (router) => {
     "/createCertainDateSchedule",
     controllers.createCertainDateSchedule
   );
-  router.post("/protoSchedule", controllers.protoSchedule);
 };
 
 module.exports = adminRoutes;
