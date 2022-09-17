@@ -4,9 +4,21 @@ const csrfDefence = csrf({ cookie: { httpOnly: true } });
 
 //End-points for authentication functions (logInController.js, logoutController.js,refreshController.js)
 const authRoutes = (router) => {
-  router.post("/login", csrfDefence, controllers.handleLogIn);
-  router.get("/logout", csrfDefence, controllers.handleLogout);
-  router.get("/refreshToken", csrfDefence, controllers.handleRefreshToken);
-  router.post("/createUser", controllers.createUser);
+  router.post(
+    process.env.REACT_APP_LOGIN,
+    csrfDefence,
+    controllers.handleLogIn
+  );
+  router.get(
+    process.env.REACT_APP_LOGOUT,
+    csrfDefence,
+    controllers.handleLogout
+  );
+  router.get(
+    process.env.REACT_APP_REFRESH_TOKEN,
+    csrfDefence,
+    controllers.handleRefreshToken
+  );
+  router.post(process.env.REACT_APP_CREATE_USER, controllers.createUser);
 };
 module.exports = authRoutes;

@@ -22,7 +22,9 @@ const AdminApp = () => {
   } = useStateContext();
 
   const [allOrderedTimePeriods, setAllOrderedTimePeriods] = useState([]);
-  const [urlsArray, setUrlsArray] = useState([{ url: "/readAllOrders" }]);
+  const [urlsArray, setUrlsArray] = useState([
+    { url: process.env.REACT_APP_READ_ALL_ORDERS },
+  ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
     console.log("Admin app  USEFFECT");

@@ -19,7 +19,7 @@ const DayManagmentCertainDay = () => {
     "Saturday",
   ];
   const [urlsArray, setUrlsArray] = useState([
-    { url: "/readAllWorkSchedules" },
+    { url: process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE },
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
@@ -44,10 +44,13 @@ const DayManagmentCertainDay = () => {
       body: JSON.stringify({ day_id: i, open: "-----", close: "-----" }),
     };
     if (isDayBlocked(i) && blockedDays.length > 0) {
-      fetch("/updateCertainDayScheduleAndSendVouchers", {
-        ...requestOptions,
-        body: JSON.stringify({ day_id: i, open: "08:00", close: "17:00" }),
-      });
+      fetch(
+        process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
+        {
+          ...requestOptions,
+          body: JSON.stringify({ day_id: i, open: "08:00", close: "17:00" }),
+        }
+      );
       setBlockedDays((prev) => prev.filter(({ day_id }) => day_id !== i));
       setBasicDaysSchedule((prev) =>
         prev.map((el, ind) => {
@@ -55,7 +58,10 @@ const DayManagmentCertainDay = () => {
         })
       );
     } else {
-      fetch("/updateCertainDayScheduleAndSendVouchers", requestOptions);
+      fetch(
+        process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
+        requestOptions
+      );
       setBlockedDays((prev) => [...prev, { day_id: i }]);
       setBasicDaysSchedule((prev) =>
         prev.map((el, ind) => {
@@ -80,7 +86,10 @@ const DayManagmentCertainDay = () => {
         close: basicDaysSchedule[i].close,
       }),
     };
-    fetch("/updateCertainDayScheduleAndSendVouchers", requestOptions);
+    fetch(
+      process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
+      requestOptions
+    );
   };
 
   return (

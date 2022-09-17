@@ -14,7 +14,7 @@ const DayManagementCertainDate = () => {
 
   const [urlState, dispatch] = useReducer(reducer, [
     {
-      url: "/readFilteredTimePeriods",
+      url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
       cors: {
         method: "POST",
         headers: {
@@ -28,7 +28,7 @@ const DayManagementCertainDate = () => {
       },
     },
     {
-      url: "/readAlteredBlockedDates",
+      url: process.env.REACT_APP_READ_ALTERED_BLOCKED_DATES,
       cors: null,
     },
   ]);
@@ -74,7 +74,7 @@ const DayManagementCertainDate = () => {
       }),
     };
     if (isDayBlocked() && blockedDates.length > 0) {
-      fetch("/deleteAlteredWorkSchedule", {
+      fetch(process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE, {
         ...requestOptions,
         body: JSON.stringify({ date: dateOfGame }),
       });
@@ -86,7 +86,7 @@ const DayManagementCertainDate = () => {
         )
       );
     } else {
-      fetch("/createCertainDateSchedule", requestOptions);
+      fetch(process.env.REACT_APP_CREATE_CERTAIN_DATE_SCHEDULE, requestOptions);
       setBlockedDates((prev) => [...prev, { date: dateOfGame }]);
     }
   };

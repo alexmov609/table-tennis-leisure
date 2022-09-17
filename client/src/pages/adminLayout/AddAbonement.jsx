@@ -8,7 +8,9 @@ import useFetch from "../../custom_hooks/useFetch";
 const AddAbonement = () => {
   const { currentColor } = useStateContext();
   const [allAbonements, setAllAbonements] = useState([]);
-  const [urlsArray, setUrlsArray] = useState([{ url: "/readAllAbonements" }]);
+  const [urlsArray, setUrlsArray] = useState([
+    { url: process.env.REACT_APP_READ_ALL_ABONEMENTS },
+  ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
     setAllAbonements(data[0]);

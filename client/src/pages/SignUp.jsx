@@ -37,7 +37,7 @@ const SignUp = () => {
       },
       body: JSON.stringify(data),
     };
-    fetch("/createUser", requestOptions);
+    fetch(process.env.REACT_APP_CREATE_USER, requestOptions);
   };
 
   {

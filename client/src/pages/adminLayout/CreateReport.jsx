@@ -18,9 +18,7 @@ const CreateReport = () => {
   const [passport, setPassport] = useState("");
 
   const handleFetch = async ({ target }, cors = null) => {
-    const data = await fetch(`/${target.name}`, cors).then((data) =>
-      data.json()
-    );
+    const data = await fetch(target.name, cors).then((data) => data.json());
     setDataToShow(data);
     setButtonClicked(target.name);
   };
@@ -63,7 +61,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readProfit"
+            name={process.env.REACT_APP_READ_PROFIT}
             onClick={(e) =>
               handleFetch(e, {
                 method: "POST",
@@ -79,7 +77,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readDaysLoad"
+            name={process.env.REACT_APP_READ_DAYS_LOAD}
             onClick={(e) =>
               handleFetch(e, {
                 method: "POST",
@@ -95,7 +93,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readUsersDataByPayment"
+            name={process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT}
             onClick={(e) =>
               handleFetch(e, {
                 method: "POST",
@@ -111,7 +109,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readCustomersAges"
+            name={process.env.REACT_APP_READ_CUSTOMERS_AGES}
             onClick={(e) => handleFetch(e)}
           >
             Display customers' ages
@@ -119,7 +117,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readCustomersAbonements"
+            name={process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS}
             onClick={(e) => handleFetch(e)}
           >
             Display users' abonements
@@ -127,7 +125,7 @@ const CreateReport = () => {
           <button
             style={{ backgroundColor: currentColor }}
             className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name="readUserOrdersByPassport"
+            name={process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT}
             onClick={(e) =>
               handleFetch(e, {
                 method: "POST",
@@ -142,20 +140,22 @@ const CreateReport = () => {
           </button>
         </div>
       </div>
-      {ButtonClicked === "readCustomersAbonements" && (
+      {ButtonClicked === process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS && (
         <Doughnut dataToShow={dataToShow} />
       )}
-      {ButtonClicked === "readDaysLoad" && (
+      {ButtonClicked === process.env.REACT_APP_READ_DAYS_LOAD && (
         <ColorMapping dataToShow={dataToShow} />
       )}
-      {ButtonClicked === "readProfit" && <Bar dataToShow={dataToShow} />}
-      {ButtonClicked === "readCustomersAges" && (
+      {ButtonClicked === process.env.REACT_APP_READ_PROFIT && (
+        <Bar dataToShow={dataToShow} />
+      )}
+      {ButtonClicked === process.env.REACT_APP_READ_CUSTOMERS_AGES && (
         <Pyramid dataToShow={dataToShow} />
       )}
-      {ButtonClicked === "readUsersDataByPayment" && (
+      {ButtonClicked === process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT && (
         <Table dataToShow={dataToShow} grid={userGrid} />
       )}
-      {ButtonClicked === "readUserOrdersByPassport" && (
+      {ButtonClicked === process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT && (
         <>
           <div className="flex flex-col md:flex-row flex justify-center">
             <div className="flex flex-col w-30 m-2">

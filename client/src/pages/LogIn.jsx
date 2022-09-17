@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
 import startVideo from "../data/startVideo.mp4";
 import { Link } from "react-router-dom";
-import UserApp from "./userLayout/UserApp";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -24,7 +23,7 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     let csrfToken;
-    await fetch("/form")
+    await fetch(process.env.REACT_APP_CSRF)
       .then((response) => {
         return response.json();
       })
@@ -40,7 +39,7 @@ export default function Login() {
       },
       body: JSON.stringify(data),
     };
-    await fetch("login", requestOptions) // was ${config.apiUrl}/users/authenticate
+    await fetch(process.env.REACT_APP_LOGIN, requestOptions)
       .then((response) => {
         if (response.ok) {
           localStorage.setItem("csrf", response.headers.get("x-xsrf-token"));
@@ -58,8 +57,6 @@ export default function Login() {
           : navigate("/AdminApp/DayManagmentCertainDate");
       });
   };
-
-
 
   return (
     <div className="relative w-full h-screen bg-zinc-900/90 ">

@@ -21,12 +21,12 @@ const UserApp = () => {
   } = useStateContext();
 
   const [urlsArray, setUrlsArray] = useState([
-    { url: "/readUser" },
-    { url: "/readAbonement" },
-    { url: "/readOrders" },
-    { url: "/readPerson" },
-    { url: "/readAllAbonements" },
-    { url: "/readUnavaliableTimePeriods" },
+    { url: process.env.REACT_APP_READ_USER },
+    { url: process.env.REACT_APP_READ_ABONEMENT },
+    { url: process.env.REACT_APP_READ_ORDERS },
+    { url: process.env.REACT_APP_READ_PERSON },
+    { url: process.env.REACT_APP_READ_ALL_ABONEMENTS },
+    { url: process.env.REACT_APP_READ_UNAVAILABLE_TIME_PERIODS },
   ]);
   const [
     {

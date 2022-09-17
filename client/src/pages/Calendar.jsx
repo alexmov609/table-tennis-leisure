@@ -29,8 +29,8 @@ const Calendar = (props) => {
   });
   // const [scheduleObj, setScheduleObj] = useState();
   const [urlsArray, setUrlsArray] = useState([
-    { url: "/readAlteredBlockedDates" },
-    { url: "/readBasicBlockedDays" },
+    { url: process.env.REACT_APP_READ_ALTERED_BLOCKED_DATES },
+    { url: process.env.REACT_APP_READ_BASIC_BLOCKED_DAYS },
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   //Unreadable, refactor

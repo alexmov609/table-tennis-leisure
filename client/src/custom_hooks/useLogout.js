@@ -6,7 +6,7 @@ const useLogout = () => {
   const logout = async () => {
     setAuthentication({});
     try {
-      const response = await fetch("/logout");
+      const response = await fetch(process.env.REACT_APP_LOGOUT);
     } catch (err) {
       console.error(err);
     }

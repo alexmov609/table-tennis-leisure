@@ -50,7 +50,7 @@ const PersonalData = () => {
       body: JSON.stringify(data),
     };
 
-    await fetch("/updatePerson", requestOptions) // was ${config.apiUrl}/users/authenticate
+    await fetch(process.env.REACT_APP_UPDATE_PERSON, requestOptions) // was ${config.apiUrl}/users/authenticate
       .then((response) => {
         if (response.ok) {
           console.log("Updated Successfully");

@@ -4,8 +4,11 @@ const csrfDefence = csrf({ cookie: { httpOnly: true } });
 
 //End-points for functions declared in userController.js
 const userRoutes = (router) => {
-  router.get("/readUser", controllers.readUser);
-  router.post("/updateUserTheme", controllers.updateUserTheme);
+  router.get(process.env.REACT_APP_READ_USER, controllers.readUser);
+  router.post(
+    process.env.REACT_APP_UPDATE_USER_THEME,
+    controllers.updateUserTheme
+  );
 };
 
 module.exports = userRoutes;

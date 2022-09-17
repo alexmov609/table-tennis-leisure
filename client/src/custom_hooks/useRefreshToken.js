@@ -10,7 +10,7 @@ const useRefreshToken = () => {
     },
   };
   const refresh = async () => {
-    await fetch("/refreshToken", requestOptions)
+    await fetch(process.env.REACT_APP_REFRESH_TOKEN, requestOptions)
       .then((response) => {
         return response.json();
       })

@@ -16,7 +16,7 @@ const OrderTimeChoice = ({ dateOfGame }) => {
   const { currentColor } = useStateContext();
   const [urlsArray, setUrlsArray] = useState([
     {
-      url: "/readFilteredTimePeriods",
+      url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
       cors: {
         method: "POST",
         headers: {

@@ -3,7 +3,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 //Paypal buttons
 function PayPal2({ chosenTimePeriods }) {
   const createOrder = () => {
-    return fetch("/processPayPalOrder", {
+    return fetch(process.env.REACT_APP_PROCESS_PAY_PAL_ORDER, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

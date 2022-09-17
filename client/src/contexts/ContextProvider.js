@@ -28,7 +28,7 @@ export const ContextProvider = ({ children }) => {
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
-    fetch("/updateUserTheme", {
+    fetch(process.env.REACT_APP_UPDATE_USER_THEME, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
