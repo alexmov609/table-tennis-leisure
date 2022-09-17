@@ -5,8 +5,8 @@
   "main": "app.js",
   "author": "Yaroslav Kuts",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "prod": "SET NODE_ENV=production & node app.js",
+    "dev": "SET NODE_ENV=development & nodemon app.js"
   },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
