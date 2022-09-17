@@ -21,30 +21,24 @@ const readWorkSchedule = async (day_id) => {
   return result;
 };
 const readAllWorkSchedules = async (request, response) => {
-  await basic_work_schedule
-    .findAll({
-      attributes: ["open", "close"],
-    })
-    .then((obtainedAllSchedules) => {
-      if (!obtainedAllSchedules) {
-        return response.status(403).send("!obtainedAllSchedules");
-      }
-      response.json(obtainedAllSchedules);
-    });
+  let receivedAllWorkSchedules = await basic_work_schedule.findAll({
+    attributes: ["open", "close"],
+  });
+  if (!receivedAllWorkSchedules)
+    return response.status(404).send({ msg: "Work schedules were not found" });
+  response.json(receivedAllWorkSchedules);
 };
 
 const readBasicBlockedDays = async (request, response) => {
-  await basic_work_schedule
-    .findAll({
-      where: { open: "-----" },
-      attributes: ["day_id"],
-    })
-    .then((obtainedBlockedDays) => {
-      if (!obtainedBlockedDays) {
-        return response.status(403).send("!obtainedBlockedDays");
-      }
-      response.json(obtainedBlockedDays);
-    });
+  let receivedBasicBlockedDays = await basic_work_schedule.findAll({
+    where: { open: "-----" },
+    attributes: ["day_id"],
+  });
+  if (!receivedBasicBlockedDays)
+    return response
+      .status(404)
+      .send({ msg: "Basic blocked days were not found" });
+  response.json(receivedBasicBlockedDays);
 };
 
 const basicWorkScheduleController = {

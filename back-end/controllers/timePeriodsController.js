@@ -13,8 +13,6 @@ const readTimePeriodPriceByID = async (request, response) => {
 
   if (!receivedPrice) {
     return response.status(400).send("!readTimePeriodPriceByID");
-  } else {
-    receivedPrice = receivedPrice.toJSON();
   }
   response.json(receivedPrice);
 };

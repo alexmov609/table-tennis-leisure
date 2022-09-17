@@ -16,17 +16,15 @@ const readAlteredWorkSchedule = async (date) => {
 };
 
 const readAlteredBlockedDates = async (request, response) => {
-  await altered_work_schedule
-    .findAll({
-      where: { open: "-----" },
-      attributes: ["date"],
-    })
-    .then((obtainedBlockedDays) => {
-      if (!obtainedBlockedDays) {
-        return response.status(403).send("!obtainedBlockedDays");
-      }
-      response.json(obtainedBlockedDays);
-    });
+  let receivedAlteredBlockedDates = await altered_work_schedule.findAll({
+    where: { open: "-----" },
+    attributes: ["date"],
+  });
+  if (!receivedAlteredBlockedDates)
+    return response
+      .status(404)
+      .send({ msg: "Altered blocked dates were not found" });
+  response.json(receivedAlteredBlockedDates);
 };
 
 const deleteAlteredWorkSchedule = async (request, response) => {

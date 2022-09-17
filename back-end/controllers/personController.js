@@ -16,11 +16,10 @@ const readPerson = async (request, response) => {
       "passport",
     ],
   });
-  if (!receivedPerson) {
-    return response.status(400).send("!readPerson");
-  } else {
-    receivedPerson = receivedPerson.toJSON();
-  }
+  if (!receivedPerson)
+    return response
+      .status(404)
+      .send({ msg: "Basic blocked days were not found" });
   response.json(receivedPerson);
 };
 

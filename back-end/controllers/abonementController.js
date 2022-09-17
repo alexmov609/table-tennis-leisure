@@ -15,22 +15,18 @@ const readAbonement = async (request, response) => {
       },
     ],
   });
-
-  if (!receivedAbonement) {
-    return response.status(400).send("!readAbonement");
-  } else {
-    receivedAbonement = receivedAbonement.toJSON();
-  }
+  if (!receivedAbonement)
+    return response.status(404).send({ msg: "Abonement was not found" });
   response.json(receivedAbonement);
 };
 
 const readAllAbonements = async (request, response) => {
   let receivedAllAbonements = await abonements.findAll({
-    raw: true,
+    // raw: true,
     attributes: ["name_of_abonement", "description", "price"],
   });
   if (!receivedAllAbonements)
-    return response.status(400).send("!readAllAbonements");
+    return response.status(404).send({ msg: "Abonements were not found" });
   response.json(receivedAllAbonements);
 };
 

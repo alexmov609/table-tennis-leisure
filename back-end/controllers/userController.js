@@ -1,36 +1,31 @@
 const DBManager = require("../sequelize");
 const { users, abonements, orders, persons } = DBManager.models;
-const { encryptPassword } = require("../services/encrypt_service");
 
 // CRUD functions for table `user`
 
 const readUser = async (request, response) => {
   const user_id = request.user_id;
 
-  console.log("readUser, user_id" + request.user_id);
-  await users
-    .findOne({
-      where: { user_id },
-      attributes: ["user_id", "email"],
-      include: [
-        // {
-        //   model: persons,
-        //   attributes: [
-        //     "passport",
-        //     "first_name",
-        //     "surname",
-        //     "date_of_birth",
-        //     "gender",
-        //   ],
-        // },
-      ],
-    })
-    .then((obtainedUser) => {
-      if (!obtainedUser) {
-        return response.status(403).send("!user Read");
-      }
-      response.json(obtainedUser);
-    });
+  let receivedUser = await users.findOne({
+    where: { user_id },
+    attributes: ["user_id", "email"],
+    include: [
+      // {
+      //   model: persons,
+      //   attributes: [
+      //     "passport",
+      //     "first_name",
+      //     "surname",
+      //     "date_of_birth",
+      //     "gender",
+      //   ],
+      // },
+    ],
+  });
+  if (!receivedUser) {
+    return response.status(404).send({ msg: "User was not not found" });
+  }
+  response.json(receivedUser);
 };
 
 const createUser = async (request, response) => {

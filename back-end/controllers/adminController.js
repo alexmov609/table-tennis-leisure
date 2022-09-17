@@ -198,10 +198,6 @@ const readUserOrdersByPassport = async (request, response) => {
 };
 
 const updateCertainDayScheduleAndSendVouchers = async (request, response) => {
-  // 1.Смена расписания. +
-  // 2. Вытащить все email. +
-  // 3. Отправить ваучеры на все email. +
-  // 4. Удаить все заказы. -
   let { day_id, open, close } = request.body;
 
   updateScheduleOfCertainDay(day_id, open, close);
@@ -296,60 +292,6 @@ const createCertainDateSchedule = async (request, response) => {
     });
 };
 
-const protoSchedule = async (request, response) => {
-  //Проверка!!!!! Самая освновная, что только ОДИН из DATE  и DAY_ID внутри request.body должен быть NULL
-  let { date = null, day_id = null, open, close } = request.body;
-  day_id = day_id && (day_id == 0 ? 6 : day_id - 1); // два знака равно для  0 в числовом виде и 0 в стринговом виде
-  day_id && updateScheduleOfCertainDay(day_id, open, close);
-  date && createAlteredWorkSchedule(date, open, close);
-
-  await users
-    .findAll({
-      raw: true,
-      nest: true,
-      attributes: ["email"],
-      include: {
-        model: orders,
-        attributes: ["date_of_game", "start_time", "end_time", "order_id"],
-        where: {
-          [Op.and]: [
-            (date && { date_of_game: date }) || [
-              where(fn("WEEKDAY", col("date_of_game")), day_id),
-              where(fn("CURDATE"), "<", col("date_of_game")),
-            ],
-            open === "-----" && close === "-----"
-              ? undefined
-              : {
-                  [Op.or]: [
-                    where(col("start_time"), "<", open),
-                    where(col("start_time"), ">", close),
-                  ],
-                },
-          ],
-        },
-      },
-    })
-    .then((updateCertainDayScheduleAndSendVouchers) => {
-      if (!updateCertainDayScheduleAndSendVouchers) {
-        return response
-          .status(400)
-          .send(
-            "updateCertainDayScheduleAndSendVouchers. !updateCertainDayScheduleAndSendVouchers"
-          );
-      }
-
-      services.sendVouchers(updateCertainDayScheduleAndSendVouchers);
-      response.json(updateCertainDayScheduleAndSendVouchers);
-      // orders.destroy({
-      //   where: {
-      //     order_id: updateCertainDayScheduleAndSendVouchers.map(
-      //       ({ orders }) => orders.order_id
-      //     ),
-      //   },
-      // });
-    });
-};
-
 const adminController = {
   readCustomersAbonements,
   readCustomersAges,
@@ -359,6 +301,5 @@ const adminController = {
   readUserOrdersByPassport,
   updateCertainDayScheduleAndSendVouchers,
   createCertainDateSchedule,
-  protoSchedule,
 };
 module.exports = adminController;

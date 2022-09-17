@@ -6,31 +6,23 @@ const { orders, users } = DBManager.models;
 
 const readOrders = async (request, response) => {
   const user_id = request.user_id;
-  let receivedOrders = await orders
-    .findAll({
-      where: { user_id },
+  let receivedOrders = await orders.findAll({
+    where: { user_id },
 
-      attributes: { exclude: ["user_id,payment_status"] },
-    })
-    .then((obtainedOrders) => {
-      if (!obtainedOrders) {
-        return response.status(400).send("readOrders. !obtainedOrders");
-      }
-      response.json(obtainedOrders);
-    });
+    attributes: { exclude: ["user_id,payment_status"] },
+  });
+  if (!receivedOrders)
+    return response.status(404).send({ msg: "Orders  were not found" });
+  response.json(receivedOrders);
 };
 
 const readAllOrders = async (request, response) => {
-  let receivedOrders = await orders
-    .findAll({
-      attributes: ["date_of_game", "start_time", "end_time"],
-    })
-    .then((obtainedOrders) => {
-      if (!obtainedOrders) {
-        return response.status(400).send("readOrders. !obtainedOrders");
-      }
-      response.json(obtainedOrders);
-    });
+  let receivedOrders = await orders.findAll({
+    attributes: ["date_of_game", "start_time", "end_time"],
+  });
+  if (!receivedOrders)
+    return response.status(404).send({ msg: "Orders were not found" });
+  response.json(receivedOrders);
 };
 
 const updateOrder = async (request, response) => {

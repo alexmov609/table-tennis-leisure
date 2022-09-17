@@ -67,8 +67,9 @@ const readUnavaliableTimePeriods = async (request, response) => {
     having: { c: { [Op.eq]: 5 } },
   });
   if (!receivedOrders)
-    return response.status(400).send("!readUnavaliableTimePeriods");
-  console.log(receivedOrders);
+    return response
+      .status(404)
+      .send({ msg: "Unavailable time periods were not found" });
   response.json(receivedOrders);
 };
 
