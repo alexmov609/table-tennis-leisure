@@ -15,27 +15,31 @@ const fs = require("fs");
 //   }
 // );
 
-console.log(os.userInfo().username);
-
-// получаем модуль Express
+require("dotenv").config({ path: `.env.${process.env.NODE_ENV}`.trim() });
 const express = require("express");
 const csrf = require("csurf");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-// создаем приложение
 const app = express();
 const csrfDefence = csrf({ cookie: { httpOnly: true } });
 
-// устанавливаем обработчик для маршрута "/"
-
-//app.use(express.static("../client/public"));
 const router = express.Router();
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-//app.use(cors({ origin: "http://localhost:3000" }));
 
-app.get("/form", csrfDefence, function (req, res) {
+const whitelist = process.env.WHITELIST.split(" ");
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+app.get(process.env.REACT_APP_CSRF, csrfDefence, function (req, res) {
   // pass the csrfToken to the view
   // res.render('send', { csrfToken: req.csrfToken() })
   res.send({ csrfToken: req.csrfToken() });
@@ -44,6 +48,16 @@ app.get("/form", csrfDefence, function (req, res) {
 const routesInitialize = require("./routes");
 app.use(routesInitialize);
 
-//app.use("/user", routers.userRoutes);
+app.use((request, response, next) => {
+  const error = new Error("URL not found.");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, request, response, next) => {
+  response
+    .status(error.status || 500)
+    .json({ error: { message: error.message } });
+});
 
 app.listen(5000);
