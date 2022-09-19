@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 //Function that verifies jwtToken
 const verifyJWT = (request, response, next) => {
@@ -7,7 +6,7 @@ const verifyJWT = (request, response, next) => {
   let jwtRefreshToken = request.cookies["jwtRefreshToken"];
   if (!jwtRefreshToken) {
     const error = new Error("Middleware. jwtToken is undefined");
-    error.status = 403;
+    error.status = 401;
     next(error);
     return;
   }
