@@ -11,8 +11,7 @@ const useFetch = (urlsArray) => {
       try {
         const response = await Promise.all(
           urls.map(async ({ url, cors }) => {
-            const response = await fetch(url, cors);
-            return await response.json();
+            return await (await fetch(url, cors)).json();
           })
         );
         if (isMounted) {

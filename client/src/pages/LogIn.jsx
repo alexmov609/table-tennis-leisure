@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
 import startVideo from "../data/startVideo.mp4";
 import { Link } from "react-router-dom";
+import useFetch from "../custom_hooks/useFetch";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -22,40 +23,31 @@ export default function Login() {
   });
 
   const onSubmit = async (data) => {
-    let csrfToken;
-    await fetch(process.env.REACT_APP_CSRF)
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        csrfToken = response.csrfToken;
-      });
-    //убрать в другое место
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": csrfToken,
-      },
-      body: JSON.stringify(data),
-    };
-    await fetch(process.env.REACT_APP_LOGIN, requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          localStorage.setItem("csrf", response.headers.get("x-xsrf-token"));
-        }
-        return response.json();
-      })
-      .then((fulfilled) => {
-        setAuthentication({
-          authorities: fulfilled["authorities"],
-          accessToken: fulfilled.accessToken,
-        });
-        setCurrentMode(fulfilled.theme === 1 ? "light" : "dark");
-        fulfilled["authorities"] === 1
-          ? navigate("/UserApp/Calendar")
-          : navigate("/AdminApp/DayManagmentCertainDate");
-      });
+    try {
+      let { csrfToken } = await (
+        await fetch(process.env.REACT_APP_CSRF)
+      ).json();
+      localStorage.setItem("csrf", csrfToken);
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": csrfToken,
+        },
+        body: JSON.stringify(data),
+      };
+      const authData = await (
+        await fetch(process.env.REACT_APP_LOGIN, requestOptions)
+      ).json();
+      const { authorities, accessToken, theme } = authData;
+      setAuthentication({ authorities, accessToken });
+      setCurrentMode(theme === 1 ? "light" : "dark");
+      authorities === 1
+        ? navigate("/UserApp/Calendar")
+        : navigate("/AdminApp/DayManagmentCertainDate");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

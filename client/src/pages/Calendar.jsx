@@ -23,25 +23,17 @@ const Calendar = (props) => {
   const { authentication } = useStateContext();
   const { unavailableTimePeriods, allOrderedTimePeriods } = useOutletContext();
   const { authorities } = authentication;
-  const [{ blockedDates, blockedDays }, setCalendarFetch] = useState({
-    blockedDates: [],
-    blockedDays: [],
-  });
-  // const [scheduleObj, setScheduleObj] = useState();
+  const [blockedDates, setBlockedDates] = useState([]);
+  const [blockedDays, setBlockedDays] = useState([]);
+
   const [urlsArray, setUrlsArray] = useState([
     { url: process.env.REACT_APP_READ_ALTERED_BLOCKED_DATES },
     { url: process.env.REACT_APP_READ_BASIC_BLOCKED_DAYS },
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
-  //Unreadable, refactor
   useEffect(() => {
-    setCalendarFetch((prev) => {
-      const keys = Object.keys(prev);
-      data.forEach((el, index) => {
-        prev[keys[index]] = el;
-      });
-      return prev;
-    });
+    const settersArray = [setBlockedDates, setBlockedDays];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
   const editorTemplate = (args) => {
@@ -106,6 +98,8 @@ const Calendar = (props) => {
   return (
     <div className="min-w-[50%] flex flex-col items-center m-4 md:m-4  p-2 md:p-10 bg-zinc-100 rounded-3xl">
       <Header title="Calendar" />
+      {isLoading && <p>Loading</p>}
+      {fetchErr && <p>{fetchErr}</p>}
       {!isLoading && (
         <ScheduleComponent
           editorTemplate={editorTemplate}
@@ -139,7 +133,6 @@ const Calendar = (props) => {
               }
             ),
           }}
-          // ref={(Schedule) => setScheduleObj(Schedule)}
         >
           {/*to see custom view of calendar in header of calendar */}
           <ViewsDirective>

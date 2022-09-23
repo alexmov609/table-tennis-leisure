@@ -28,31 +28,23 @@ const UserApp = () => {
     { url: process.env.REACT_APP_READ_ALL_ABONEMENTS },
     { url: process.env.REACT_APP_READ_UNAVAILABLE_TIME_PERIODS },
   ]);
-  const [
-    {
-      user,
-      userAbonement,
-      orders,
-      person,
-      abonementsToChoose,
-      unavailableTimePeriods,
-    },
-    setUserAppFetchResults,
-  ] = useState({
-    user: [],
-    userAbonement: [],
-    orders: [],
-    person: [],
-    abonementsToChoose: [],
-    unavailableTimePeriods: [],
-  });
+  const [user, setUser] = useState([]);
+  const [userAbonement, setUserAbonement] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [person, setPerson] = useState([]);
+  const [abonementsToChoose, setAbonementsToChoose] = useState([]);
+  const [unavailableTimePeriods, setUnavailableTimePeriods] = useState([]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    setUserAppFetchResults((prev) => {
-      const keys = Object.keys(prev);
-      data.forEach((el, index) => (prev[keys[index]] = el));
-      return prev;
-    });
+    const settersArray = [
+      setUser,
+      setUserAbonement,
+      setOrders,
+      setPerson,
+      setAbonementsToChoose,
+      setUnavailableTimePeriods,
+    ];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
   return (
     <div className={currentMode}>

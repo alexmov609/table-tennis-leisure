@@ -11,8 +11,6 @@ import useFetch from "../../custom_hooks/useFetch";
 //Main component that includes admin interface components
 const AdminApp = () => {
   console.log("Admin app rendered");
-  let today = new Date().toLocaleDateString().split(".");
-  today = `${today[2]}-${today[1]}-${today[0]}`;
   const {
     activeMenu,
     themeSettings,
@@ -78,7 +76,6 @@ const AdminApp = () => {
                 <Outlet
                   context={{
                     allOrderedTimePeriods,
-                    today,
                   }}
                 />
               ) : (
