@@ -67,6 +67,7 @@ const CreateReport = () => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "x-xsrf-token": localStorage.getItem("csrf"),
                 },
                 body: JSON.stringify(dateRange),
               })
@@ -83,6 +84,7 @@ const CreateReport = () => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "x-xsrf-token": localStorage.getItem("csrf"),
                 },
                 body: JSON.stringify(dateRange),
               })
@@ -99,6 +101,7 @@ const CreateReport = () => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "x-xsrf-token": localStorage.getItem("csrf"),
                   body: JSON.stringify(dateRange),
                 },
               })
@@ -131,6 +134,7 @@ const CreateReport = () => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "x-xsrf-token": localStorage.getItem("csrf"),
                 },
                 body: JSON.stringify({ passport }),
               })

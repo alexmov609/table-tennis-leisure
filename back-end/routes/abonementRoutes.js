@@ -1,4 +1,6 @@
 const controllers = require("../controllers");
+const csrf = require("csurf");
+const csrfDefence = csrf({ cookie: { httpOnly: true } });
 
 //End-points for functions declared in abonementController.js
 const abonementRoutes = (router) => {
@@ -9,6 +11,7 @@ const abonementRoutes = (router) => {
   );
   router.post(
     process.env.REACT_APP_CREATE_ABONEMENT,
+    csrfDefence,
     controllers.createAbonement
   );
 };

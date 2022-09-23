@@ -13,7 +13,8 @@ const AddAbonement = () => {
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    setAllAbonements(data[0]);
+    const settersArray = [setAllAbonements];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
   //form hook
@@ -46,6 +47,7 @@ const AddAbonement = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-xsrf-token": localStorage.getItem("csrf"),
       },
       body: JSON.stringify({ name_of_abonement, price, description }),
     });

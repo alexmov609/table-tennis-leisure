@@ -11,7 +11,11 @@ const ordersRoutes = (router) => {
     controllers.updateOrder
   );
   router.get(process.env.REACT_APP_READ_ALL_ORDERS, controllers.readAllOrders);
-  router.post(process.env.REACT_APP_DELETE_ORDER, controllers.deleteOrder);
+  router.post(
+    process.env.REACT_APP_DELETE_ORDER,
+    csrfDefence,
+    controllers.deleteOrder
+  );
 };
 
 module.exports = ordersRoutes;

@@ -7,6 +7,7 @@ const userRoutes = (router) => {
   router.get(process.env.REACT_APP_READ_USER, controllers.readUser);
   router.post(
     process.env.REACT_APP_UPDATE_USER_THEME,
+    csrfDefence,
     controllers.updateUserTheme
   );
 };

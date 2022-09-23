@@ -36,6 +36,7 @@ const MyOrders = () => {
     //     method: "POST",
     //     headers: {
     //       "Content-Type": "application/json",
+    //       "x-xsrf-token": localStorage.getItem("csrf"),
     //     },
     //     body: JSON.stringify({ order_id: args.data[0].order_id }),
     //   });

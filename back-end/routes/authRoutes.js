@@ -9,14 +9,9 @@ const authRoutes = (router) => {
     csrfDefence,
     controllers.handleLogIn
   );
-  router.get(
-    process.env.REACT_APP_LOGOUT,
-    csrfDefence,
-    controllers.handleLogout
-  );
+  router.get(process.env.REACT_APP_LOGOUT, controllers.handleLogout);
   router.get(
     process.env.REACT_APP_REFRESH_TOKEN,
-    csrfDefence,
     controllers.handleRefreshToken
   );
   router.post(process.env.REACT_APP_CREATE_USER, controllers.createUser);

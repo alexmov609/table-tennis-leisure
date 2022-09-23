@@ -21,7 +21,7 @@ const OrderTimeChoice = ({ dateOfGame }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "x-xsrf-token": csrfToken,
+          "x-xsrf-token": localStorage.getItem("csrf"),
         },
         body: JSON.stringify({
           date: dateOfGame || today,
@@ -32,7 +32,8 @@ const OrderTimeChoice = ({ dateOfGame }) => {
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    setFilteredtimePeriods(data[0]);
+    const settersArray = [setFilteredtimePeriods];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
   const handleClick = (e, tmp) => {

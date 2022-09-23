@@ -32,6 +32,7 @@ export const ContextProvider = ({ children }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-xsrf-token": localStorage.getItem("csrf"),
       },
       body: JSON.stringify({ theme: e.target.value === "dark" ? 2 : 1 }),
     });
@@ -67,6 +68,7 @@ export const ContextProvider = ({ children }) => {
         setDateOfGame,
         authentication,
         setAuthentication,
+        today,
       }}
     >
       {children}

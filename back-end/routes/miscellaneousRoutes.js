@@ -6,6 +6,7 @@ const csrfDefence = csrf({ cookie: { httpOnly: true } });
 const miscellaneousRoutes = (router) => {
   router.post(
     process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
+    csrfDefence,
     controllers.readFilteredTimePeriods
   );
   router.get(

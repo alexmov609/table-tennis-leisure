@@ -7,6 +7,7 @@ function PayPal2({ chosenTimePeriods }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-xsrf-token": localStorage.getItem("csrf"),
       },
       body: JSON.stringify({ chosenTimePeriods }),
     })
@@ -18,7 +19,6 @@ function PayPal2({ chosenTimePeriods }) {
         return id;
       })
       .catch(({ error }) => {
-        // const er = JSON.parse(error);
         console.log(error);
       });
   };

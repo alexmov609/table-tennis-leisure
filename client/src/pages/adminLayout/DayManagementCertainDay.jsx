@@ -23,7 +23,8 @@ const DayManagmentCertainDay = () => {
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    setBasicDaysSchedule(data[0]);
+    const settersArray = [setBasicDaysSchedule];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
   const handleChange = ({ target }, index) => {
@@ -40,6 +41,7 @@ const DayManagmentCertainDay = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-xsrf-token": localStorage.getItem("csrf"),
       },
       body: JSON.stringify({ day_id: i, open: "-----", close: "-----" }),
     };

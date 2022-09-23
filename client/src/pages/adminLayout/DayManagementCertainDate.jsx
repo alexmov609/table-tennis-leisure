@@ -6,8 +6,8 @@ import useFetch from "../../custom_hooks/useFetch";
 import Calendar from "../Calendar";
 
 const DayManagementCertainDate = () => {
-  const { currentColor } = useStateContext();
-  const { today } = useOutletContext();
+  const { currentColor, today } = useStateContext();
+
   const [dateOfGame, setDateOfGame] = useState(today);
   const [blockedDates, setBlockedDates] = useState([]);
   const [filteredTimePeriods, setFilteredTimePeriods] = useState([]);
@@ -19,7 +19,7 @@ const DayManagementCertainDate = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "x-xsrf-token": csrfToken,
+          "x-xsrf-token": localStorage.getItem("csrf"),
         },
         body: JSON.stringify({
           date: dateOfGame,
@@ -35,8 +35,8 @@ const DayManagementCertainDate = () => {
 
   const { data, fetchErr, isLoading } = useFetch(urlState);
   useEffect(() => {
-    const useSetters = [setFilteredTimePeriods, setBlockedDates];
-    data.forEach((el, i) => useSetters[i](el));
+    const settersArray = [setFilteredTimePeriods, setBlockedDates];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
   useEffect(() => {
     dispatch({ key: "dateOfGameUpdated", payload: { dateOfGame } });
@@ -58,7 +58,6 @@ const DayManagementCertainDate = () => {
       default:
         break;
     }
-    console.log("END OF REDUCER");
   }
   console.log(urlState);
   const handleBlockUnBlock = () => {
@@ -66,6 +65,7 @@ const DayManagementCertainDate = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-xsrf-token": localStorage.getItem("csrf"),
       },
       body: JSON.stringify({
         date: dateOfGame,
