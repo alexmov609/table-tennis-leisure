@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Table, ColorMapping, Bar, Pyramid, Doughnut } from "../Charts";
-import { userGrid, ordersGrid } from "../../data/dummy";
+import { userGrid, ordersGrid, handleForm } from "../../data/dummy";
+import uuid from "react-uuid";
+import useFetch from "../../custom_hooks/useFetch";
 
 //Component that helps to create different reports
 const CreateReport = () => {
   const { currentColor } = useStateContext();
-  const [dataToShow, setDataToShow] = useState([]);
-  const [ButtonClicked, setButtonClicked] = useState(false);
   const [dateRange, setDateRange] = useState({
     start_date: new Date(
       new Date().setDate(new Date().getDate() - 30)
@@ -15,169 +15,203 @@ const CreateReport = () => {
     end_date: new Date().toLocaleDateString(),
   });
 
-  const [passport, setPassport] = useState("");
+  const [passport, setPassport] = useState({ passport: "" });
+  const [buttonsArray, setButtonsArray] = useState([
+    { show: false, name: "Calculate profit" },
+    { show: false, name: "Days' load" },
+    { show: false, name: "Display profit gained from users" },
+    { show: false, name: "Display customers' ages" },
+    { show: false, name: "Display users' abonements" },
+    { show: false, name: "Display users' orders by passport" },
+  ]);
+  const [chartsArray, setChartsArray] = useState([]);
+  const [urlsArray, setUrlsArray] = useState([
+    {
+      url: process.env.REACT_APP_READ_PROFIT,
+      cors: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": localStorage.getItem("csrf"),
+        },
+        body: JSON.stringify(dateRange),
+      },
+    },
+    {
+      url: process.env.REACT_APP_READ_DAYS_LOAD,
+      cors: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": localStorage.getItem("csrf"),
+        },
+        body: JSON.stringify(dateRange),
+      },
+    },
+    {
+      url: process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT,
+      cors: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": localStorage.getItem("csrf"),
+        },
+        body: JSON.stringify(dateRange),
+      },
+    },
+    { url: process.env.REACT_APP_READ_CUSTOMERS_AGES, cors: null },
+    { url: process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS, cors: null },
+    {
+      url: process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT,
+      cors: {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": localStorage.getItem("csrf"),
+        },
+        body: JSON.stringify(passport),
+      },
+    },
+  ]);
 
-  const handleFetch = async ({ target }, cors = null) => {
-    const data = await fetch(target.name, cors).then((data) => data.json());
-    setDataToShow(data);
-    setButtonClicked(target.name);
-  };
+  const { data, fetchErr, isLoading } = useFetch(urlsArray);
+  useEffect(() => {
+    setButtonsArray((prev) =>
+      prev.map((el, i) => {
+        const { name, show } = el;
+        return {
+          name,
+          show,
+          btn: (
+            <>
+              <div key={uuid()} className="flex flex-col md:flex-row ">
+                <button
+                  style={{ backgroundColor: currentColor }}
+                  className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1 hover:scale-105 ease-in duration-300"
+                  onClick={(_) => {
+                    handleShow(i);
+                  }}
+                >
+                  {name}
+                </button>
+              </div>
+            </>
+          ),
+        };
+      })
+    );
+  }, [currentColor]);
+  useEffect(() => {
+    setChartsArray(
+      [Bar, ColorMapping, Table, Pyramid, Doughnut, Table].map(
+        (Component, i) => {
+          if (i === 2)
+            return (
+              <>
+                {buttonsArray[i].show && (
+                  <Component dataToShow={data[i]} grid={userGrid} />
+                )}
+              </>
+            );
 
-  const handleDateChange = (target) => {
-    setDateRange((prev) => {
-      return { ...prev, [target.name]: target.value };
-    });
-  };
+          if (i === 5)
+            return (
+              <>
+                {buttonsArray[i].show && (
+                  <>
+                    <div className="flex flex-col md:flex-row flex justify-center">
+                      <form
+                        className="flex flex-col w-30 m-2"
+                        onSubmit={handleSubmit}
+                      >
+                        <label htmlFor="passport">Passport</label>
+                        <input
+                          type="number"
+                          id="passport"
+                          name="passport"
+                          className="border  bg-gray-200 p-2"
+                        />
+                        <button type="submit"> Submit</button>
+                      </form>
+                    </div>
+                    <Component
+                      dataToShow={data[i]}
+                      grid={ordersGrid.filter(
+                        (el) => el.field !== "payment_status"
+                      )}
+                    />
+                  </>
+                )}
+              </>
+            );
+          return (
+            <>{buttonsArray[i].show && <Component dataToShow={data[i]} />}</>
+          );
+        }
+      )
+    );
+  }, [buttonsArray, data]);
+  useEffect(() => {
+    setUrlsArray((prev) =>
+      prev.map(({ url, cors }, i) => {
+        return {
+          url,
+          cors: cors
+            ? {
+                ...cors,
+                body: JSON.stringify(i === 5 ? passport : dateRange),
+              }
+            : null,
+        };
+      })
+    );
+  }, [dateRange, passport]);
 
-  const handlePassportChange = (target) => {
-    setPassport(target.value);
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formProps = handleForm(e);
+    formProps?.start_date && setDateRange(formProps);
+    formProps?.passport && setPassport(formProps);
+  }
+
+  function handleShow(index) {
+    setButtonsArray((prev) =>
+      prev.map((el, i) => {
+        return { ...el, show: index === i ? true : false };
+      })
+    );
+  }
 
   return (
     <div className="flex flex-col m-2 md:m-10 mt-24 p-2 md:p-10 bg-zinc-100 rounded-3xl">
       <div className="flex flex-row">
         {/**Start-end date */}
-        <div className="flex flex-row md:flex-col">
+        <form className="flex flex-row md:flex-col" onSubmit={handleSubmit}>
           <div className="flex flex-col w-29 m-2">
-            <label htmlFor="">Start date</label>
+            <label htmlFor="start_date">Start date</label>
             <input
               type="date"
-              onChange={({ target }) => handleDateChange(target)}
               name="start_date"
-              className="border  bg-gray-200 p-2"
+              id="start_date"
+              className="border bg-gray-200 p-2"
             />
           </div>
           <div className="flex flex-col w-29 m-2">
-            <label htmlFor="">End date</label>
+            <label htmlFor="end_date">End date</label>
             <input
               type="date"
-              onChange={({ target }) => handleDateChange(target)}
               name="end_date"
+              id="end_date"
               className="border  bg-gray-200 p-2"
             />
           </div>
-        </div>
-        <div className="flex flex-col md:flex-row ">
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_PROFIT}
-            onClick={(e) =>
-              handleFetch(e, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-xsrf-token": localStorage.getItem("csrf"),
-                },
-                body: JSON.stringify(dateRange),
-              })
-            }
-          >
-            Calculate profit
-          </button>
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_DAYS_LOAD}
-            onClick={(e) =>
-              handleFetch(e, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-xsrf-token": localStorage.getItem("csrf"),
-                },
-                body: JSON.stringify(dateRange),
-              })
-            }
-          >
-            Days load
-          </button>
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT}
-            onClick={(e) =>
-              handleFetch(e, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-xsrf-token": localStorage.getItem("csrf"),
-                  body: JSON.stringify(dateRange),
-                },
-              })
-            }
-          >
-            Display profit gained from users
-          </button>
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_CUSTOMERS_AGES}
-            onClick={(e) => handleFetch(e)}
-          >
-            Display customers' ages
-          </button>
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS}
-            onClick={(e) => handleFetch(e)}
-          >
-            Display users' abonements
-          </button>
-          <button
-            style={{ backgroundColor: currentColor }}
-            className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1"
-            name={process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT}
-            onClick={(e) =>
-              handleFetch(e, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-xsrf-token": localStorage.getItem("csrf"),
-                },
-                body: JSON.stringify({ passport }),
-              })
-            }
-          >
-            Display users' orders by passport
-          </button>
-        </div>
+          <button type="submit">Submit</button>
+        </form>
+        {isLoading && <p>Loading</p>}
+        {fetchErr && <p>{fetchErr}</p>}
+        {buttonsArray.map(({ btn }) => btn)}
       </div>
-      {ButtonClicked === process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS && (
-        <Doughnut dataToShow={dataToShow} />
-      )}
-      {ButtonClicked === process.env.REACT_APP_READ_DAYS_LOAD && (
-        <ColorMapping dataToShow={dataToShow} />
-      )}
-      {ButtonClicked === process.env.REACT_APP_READ_PROFIT && (
-        <Bar dataToShow={dataToShow} />
-      )}
-      {ButtonClicked === process.env.REACT_APP_READ_CUSTOMERS_AGES && (
-        <Pyramid dataToShow={dataToShow} />
-      )}
-      {ButtonClicked === process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT && (
-        <Table dataToShow={dataToShow} grid={userGrid} />
-      )}
-      {ButtonClicked === process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT && (
-        <>
-          <div className="flex flex-col md:flex-row flex justify-center">
-            <div className="flex flex-col w-30 m-2">
-              <label htmlFor="">Passport</label>
-              <input
-                type="number"
-                onChange={({ target }) => handlePassportChange(target)}
-                name="passport"
-                className="border  bg-gray-200 p-2"
-              />
-            </div>
-          </div>
-          <Table
-            dataToShow={dataToShow}
-            grid={ordersGrid.filter((el) => el.field !== "payment_status")}
-          />
-        </>
-      )}
+      {!isLoading && chartsArray}
     </div>
   );
 };
