@@ -3,6 +3,7 @@ import { CheckIcon } from "@heroicons/react/solid";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useForm } from "react-hook-form";
 import useFetch from "../../custom_hooks/useFetch";
+import { corsMaker } from "../../data/dummy";
 
 //Component that allow to browse current abonements and add new ones
 const AddAbonement = () => {
@@ -43,14 +44,13 @@ const AddAbonement = () => {
         description,
       },
     ]);
-    fetch(process.env.REACT_APP_CREATE_ABONEMENT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": localStorage.getItem("csrf"),
-      },
-      body: JSON.stringify({ name_of_abonement, price, description }),
-    });
+    fetch(
+      process.env.REACT_APP_CREATE_ABONEMENT,
+      corsMaker({
+        method: "POST",
+        body: { name_of_abonement, price, description },
+      })
+    );
   };
 
   const handleReset = () => {

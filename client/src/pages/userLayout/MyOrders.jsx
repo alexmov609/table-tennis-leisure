@@ -14,7 +14,7 @@ import {
   Toolbar,
   Search,
 } from "@syncfusion/ej2-react-grids";
-import { contextMenuItems, ordersGrid } from "../../data/dummy";
+import { contextMenuItems, corsMaker, ordersGrid } from "../../data/dummy";
 import Header from "../../components/Header";
 import OrderTimeChoice from "./OrderTimeChoice";
 
@@ -32,16 +32,16 @@ const MyOrders = () => {
   const actionBegin = (args) => {
     console.log("actionBegin", args);
     // if (args.requestType === "delete") {
-    //   fetch("/deleteOrder", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "x-xsrf-token": localStorage.getItem("csrf"),
-    //     },
-    //     body: JSON.stringify({ order_id: args.data[0].order_id }),
-    //   });
+    //   fetch(
+    //     "/deleteOrder",
+    //     corsMaker({
+    //       method: "POST",
+    //       body: { order_id: args.data[0].order_id },
+    //     })
+    //   );
     // }
   };
+
   const actionComplete = () => {
     console.log("complete");
   };

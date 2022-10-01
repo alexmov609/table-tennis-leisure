@@ -5,6 +5,7 @@ import uuid from "react-uuid";
 import PayPal from "./PayPal";
 import PayPal2 from "./PayPal2";
 import useFetch from "../../custom_hooks/useFetch";
+import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to place an order
 const OrderTimeChoice = ({ dateOfGame }) => {
@@ -14,20 +15,17 @@ const OrderTimeChoice = ({ dateOfGame }) => {
   const [chosenTimePeriods, setChosenTimePeriods] = useState([]);
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
   const { currentColor } = useStateContext();
+
   const [urlsArray, setUrlsArray] = useState([
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify({
+        body: {
           date: dateOfGame || today,
           day_id: new Date(dateOfGame || today).getDay(),
-        }),
-      },
+        },
+      }),
     },
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { corsMaker } from "../data/dummy";
 import useFetch from "../custom_hooks/useFetch";
 
 const StateContext = createContext();
@@ -28,14 +29,13 @@ export const ContextProvider = ({ children }) => {
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
-    fetch(process.env.REACT_APP_UPDATE_USER_THEME, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": localStorage.getItem("csrf"),
-      },
-      body: JSON.stringify({ theme: e.target.value === "dark" ? 2 : 1 }),
-    });
+    fetch(
+      process.env.REACT_APP_UPDATE_USER_THEME,
+      corsMaker({
+        method: "POST",
+        body: { theme: e.target.value === "dark" ? 2 : 1 },
+      })
+    );
     setThemeSettings(false);
   };
 

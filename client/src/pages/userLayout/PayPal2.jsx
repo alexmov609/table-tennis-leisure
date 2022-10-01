@@ -1,16 +1,16 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { corsMaker } from "../../data/dummy";
 
 //Paypal buttons
 function PayPal2({ chosenTimePeriods }) {
   const createOrder = () => {
-    return fetch(process.env.REACT_APP_PROCESS_PAY_PAL_ORDER, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": localStorage.getItem("csrf"),
-      },
-      body: JSON.stringify({ chosenTimePeriods }),
-    })
+    return fetch(
+      process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
+      corsMaker({
+        method: "POST",
+        body: { chosenTimePeriods },
+      })
+    )
       .then((res) => {
         if (res.ok) return res.json();
         return res.json().then((json) => Promise.reject(json));

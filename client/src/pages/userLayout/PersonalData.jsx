@@ -8,6 +8,7 @@ import { HiOutlineChevronDoubleUp } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
+import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to browse its personal data
 //User can update its personal data
@@ -40,22 +41,17 @@ const PersonalData = () => {
     },
   });
   const onSubmit = async (data) => {
-    let csrfToken = localStorage.getItem("csrf");
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": csrfToken,
-      },
-      body: JSON.stringify(data),
-    };
-
-    await fetch(process.env.REACT_APP_UPDATE_PERSON, requestOptions) // was ${config.apiUrl}/users/authenticate
-      .then((response) => {
-        if (response.ok) {
-          console.log("Updated Successfully");
-        }
-      });
+    await fetch(
+      process.env.REACT_APP_UPDATE_PERSON,
+      corsMaker({
+        method: "POST",
+        body: data,
+      })
+    ).then((response) => {
+      if (response.ok) {
+        console.log("Updated Successfully");
+      }
+    });
   };
 
   return (

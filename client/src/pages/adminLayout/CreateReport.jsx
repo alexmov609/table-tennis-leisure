@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Table, ColorMapping, Bar, Pyramid, Doughnut } from "../Charts";
-import { userGrid, ordersGrid, handleForm } from "../../data/dummy";
+import { userGrid, ordersGrid, handleForm, corsMaker } from "../../data/dummy";
 import uuid from "react-uuid";
 import useFetch from "../../custom_hooks/useFetch";
 
@@ -28,49 +28,33 @@ const CreateReport = () => {
   const [urlsArray, setUrlsArray] = useState([
     {
       url: process.env.REACT_APP_READ_PROFIT,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify(dateRange),
-      },
+        body: dateRange,
+      }),
     },
     {
       url: process.env.REACT_APP_READ_DAYS_LOAD,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify(dateRange),
-      },
+        body: dateRange,
+      }),
     },
     {
       url: process.env.REACT_APP_READ_USERS_DATA_BY_PAYMENT,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify(dateRange),
-      },
+        body: dateRange,
+      }),
     },
     { url: process.env.REACT_APP_READ_CUSTOMERS_AGES, cors: null },
     { url: process.env.REACT_APP_READ_CUSTOMERS_ABONEMENTS, cors: null },
     {
       url: process.env.REACT_APP_READ_USER_ORDERS_BY_PASSPORT,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify(passport),
-      },
+        body: passport,
+      }),
     },
   ]);
 

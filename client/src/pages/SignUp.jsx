@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { corsMaker } from "../data/dummy";
 import LogIni from "../data/LogIni.jpg";
 
 //Component that gives an option to registrate regular user
@@ -22,22 +23,16 @@ const SignUp = () => {
       date_of_birth: "",
     },
   });
-  const setPassword = (e) => {
-    // setValue("password",e.target.value)
-    console.log(e);
-  };
 
   const checkPassword = () => {};
   const onSubmit = (data) => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // "x-xsrf-token": csrfToken,
-      },
-      body: JSON.stringify(data),
-    };
-    fetch(process.env.REACT_APP_CREATE_USER, requestOptions);
+    fetch(
+      process.env.REACT_APP_CREATE_USER,
+      corsMaker({
+        method: "POST",
+        body: data,
+      })
+    );
   };
 
   {
@@ -46,16 +41,6 @@ const SignUp = () => {
   const endDate = (args) => {
     args.isDisabled = true;
   };
-
-  //  const handleSignUp = ()=>{
-  //     return (
-  //       <Link to="/UserApp">
-  //         <ContextProvider>
-  //           <UserApp />
-  //         </ContextProvider>
-  //       </Link>
-  //     );
-  //  }
 
   return (
     <div className="relative w-full h-screen bg-zinc-900/90">

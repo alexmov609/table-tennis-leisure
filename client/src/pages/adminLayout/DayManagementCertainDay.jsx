@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import useFetch from "../../custom_hooks/useFetch";
+import { corsMaker } from "../../data/dummy";
 
 //Component that contains week days
 // Administrator can change work hours or block/unblock each of days
@@ -37,21 +38,13 @@ const DayManagmentCertainDay = () => {
   };
 
   const handleBlockUnBlock = (i) => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-xsrf-token": localStorage.getItem("csrf"),
-      },
-      body: JSON.stringify({ day_id: i, open: "-----", close: "-----" }),
-    };
     if (isDayBlocked(i) && blockedDays.length > 0) {
       fetch(
         process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
-        {
-          ...requestOptions,
-          body: JSON.stringify({ day_id: i, open: "08:00", close: "17:00" }),
-        }
+        corsMaker({
+          method: "POST",
+          body: { day_id: i, open: "08:00", close: "17:00" },
+        })
       );
       setBlockedDays((prev) => prev.filter(({ day_id }) => day_id !== i));
       setBasicDaysSchedule((prev) =>
@@ -62,7 +55,10 @@ const DayManagmentCertainDay = () => {
     } else {
       fetch(
         process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
-        requestOptions
+        corsMaker({
+          method: "POST",
+          body: { day_id: i, open: "-----", close: "-----" },
+        })
       );
       setBlockedDays((prev) => [...prev, { day_id: i }]);
       setBasicDaysSchedule((prev) =>
@@ -77,20 +73,16 @@ const DayManagmentCertainDay = () => {
   };
 
   const handleSubmit = (i) => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        day_id: i,
-        open: basicDaysSchedule[i].open,
-        close: basicDaysSchedule[i].close,
-      }),
-    };
     fetch(
       process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
-      requestOptions
+      corsMaker({
+        method: "POST",
+        body: {
+          day_id: i,
+          open: basicDaysSchedule[i].open,
+          close: basicDaysSchedule[i].close,
+        },
+      })
     );
   };
 

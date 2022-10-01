@@ -1,8 +1,8 @@
 import { useEffect, useState, useReducer } from "react";
-import { useOutletContext } from "react-router-dom";
 import uuid from "react-uuid";
 import { useStateContext } from "../../contexts/ContextProvider";
 import useFetch from "../../custom_hooks/useFetch";
+import { corsMaker } from "../../data/dummy";
 import Calendar from "../Calendar";
 
 const DayManagementCertainDate = () => {
@@ -15,17 +15,10 @@ const DayManagementCertainDate = () => {
   const [urlState, dispatch] = useReducer(reducer, [
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
-      cors: {
+      cors: corsMaker({
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": localStorage.getItem("csrf"),
-        },
-        body: JSON.stringify({
-          date: dateOfGame,
-          day_id: new Date(dateOfGame).getDay(),
-        }),
-      },
+        body: { date: dateOfGame, day_id: new Date(dateOfGame).getDay() },
+      }),
     },
     {
       url: process.env.REACT_APP_READ_ALTERED_BLOCKED_DATES,
@@ -59,7 +52,7 @@ const DayManagementCertainDate = () => {
         break;
     }
   }
-  console.log(urlState);
+
   const handleBlockUnBlock = () => {
     const requestOptions = {
       method: "POST",
@@ -74,10 +67,13 @@ const DayManagementCertainDate = () => {
       }),
     };
     if (isDayBlocked() && blockedDates.length > 0) {
-      fetch(process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE, {
-        ...requestOptions,
-        body: JSON.stringify({ date: dateOfGame }),
-      });
+      fetch(
+        process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE,
+        corsMaker({
+          method: "POST",
+          body: { date: dateOfGame },
+        })
+      );
       setBlockedDates((prev) =>
         prev.filter(
           ({ date }) =>
@@ -86,7 +82,13 @@ const DayManagementCertainDate = () => {
         )
       );
     } else {
-      fetch(process.env.REACT_APP_CREATE_CERTAIN_DATE_SCHEDULE, requestOptions);
+      fetch(
+        process.env.REACT_APP_CREATE_CERTAIN_DATE_SCHEDULE,
+        corsMaker({
+          method: "POST",
+          body: { date: dateOfGame, open: "-----", close: "-----" },
+        })
+      );
       setBlockedDates((prev) => [...prev, { date: dateOfGame }]);
     }
   };

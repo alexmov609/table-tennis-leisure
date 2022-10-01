@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import useFetch from "../custom_hooks/useFetch";
 
 import { useStateContext } from "../contexts/ContextProvider";
+import { corsMaker } from "../data/dummy";
 
 //Start page of this project
 export default function Login() {
@@ -28,16 +29,14 @@ export default function Login() {
         await fetch(process.env.REACT_APP_CSRF)
       ).json();
       localStorage.setItem("csrf", csrfToken);
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-xsrf-token": csrfToken,
-        },
-        body: JSON.stringify(data),
-      };
       const authData = await (
-        await fetch(process.env.REACT_APP_LOGIN, requestOptions)
+        await fetch(
+          process.env.REACT_APP_LOGIN,
+          corsMaker({
+            method: "POST",
+            body: data,
+          })
+        )
       ).json();
       const { authorities, accessToken, theme } = authData;
       setAuthentication({ authorities, accessToken });
