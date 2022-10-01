@@ -43,7 +43,7 @@ const AddAbonement = () => {
         description,
       },
     ]);
-    fetch("/createAbonement", {
+    fetch(process.env.REACT_APP_CREATE_ABONEMENT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

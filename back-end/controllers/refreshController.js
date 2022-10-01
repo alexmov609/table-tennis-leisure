@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const DBManager = require("../sequelize");
 const { users } = DBManager.models;
-// require("dotenv").config({ path: `.env.${process.env.NODE_ENV}`.trim() });
 
 const handleRefreshToken = async (request, response) => {
   const csrfToken = request.get("x-xsrf-token");

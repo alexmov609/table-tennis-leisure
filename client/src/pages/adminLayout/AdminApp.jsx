@@ -26,7 +26,8 @@ const AdminApp = () => {
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
     console.log("Admin app  USEFFECT");
-    setAllOrderedTimePeriods(data[0]);
+    const settersArray = [setAllOrderedTimePeriods];
+    data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
   return (

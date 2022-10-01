@@ -268,3 +268,21 @@ export const contextMenuItems = [
   "LastPage",
   "NextPage",
 ];
+
+export const corsMaker = (action) => {
+  const { method, body } = action;
+  switch (method) {
+    case "POST":
+      return {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-xsrf-token": localStorage.getItem("csrf"),
+        },
+        body: JSON.stringify(body),
+      };
+  }
+};
+
+export const handleForm = ({ target }) =>
+  Object.fromEntries(new FormData(target));

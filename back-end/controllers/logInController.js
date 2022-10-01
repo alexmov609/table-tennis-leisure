@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-// require("dotenv").config({ path: `.env.${process.env.NODE_ENV}`.trim() });
 
 const DBManager = require("../sequelize");
 const { users } = DBManager.models;
@@ -52,7 +51,7 @@ const handleLogIn = async (request, response) => {
     }
   );
 
-  users.update({ refreshToken }, { where: { user_id } }); //VALID UNTIL
+  users.update({ refreshToken }, { where: { user_id } });
   response
     .cookie("jwtRefreshToken", refreshToken, {
       maxAge: 24 * 60 * 60 * 1000,
@@ -60,14 +59,7 @@ const handleLogIn = async (request, response) => {
       //secure: true,
       //sameSite: "None";
     })
-    .setHeader("X-XSRF-TOKEN", csrfToken)
     .json({ accessToken, authorities, theme });
-
-  // let passwordValidated = user.password === request.body.password;
-  // if (!passwordValidated)
-  //   return response
-  //     .status(401)
-  //     .send({ authenticated: false, accessToken: null });
 };
 
 module.exports = handleLogIn;
