@@ -2,8 +2,9 @@ const { readWorkSchedule } = require("./basicWorkScheduleController");
 const { readAlteredWorkSchedule } = require("./alteredWorkScheduleController");
 const auxillary_functions = require("../auxillary_functions");
 const DBManager = require("../sequelize");
+const services = require("../services");
 const { Op, fn, where, col, QueryTypes } = require("sequelize");
-const { orders, time_periods } = DBManager.models;
+const { orders, users } = DBManager.models;
 
 const readDayTimePeriodsLoad = async (request, response) => {
   const { date_of_game } = request.body;
@@ -73,8 +74,15 @@ const readUnavaliableTimePeriods = async (request, response) => {
   response.json(receivedOrders);
 };
 
+const sendUserComment = async (request, response) => {
+  const { message } = request.body;
+  const { email } = request;
+  services.sendMail("tabletennisleisureNOREPLY@gmail.com", email, message);
+};
+
 const miscellaneousController = {
   readFilteredTimePeriods,
   readUnavaliableTimePeriods,
+  sendUserComment,
 };
 module.exports = miscellaneousController;

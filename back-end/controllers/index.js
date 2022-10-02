@@ -1,6 +1,4 @@
-const handleLogIn = require("./logInController");
-const handleRefreshToken = require("./refreshController");
-const handleLogout = require("./logoutController");
+const authController = require("./authController");
 const userController = require("./userController");
 const abonementController = require("./abonementController");
 const ordersController = require("./ordersController");
@@ -12,9 +10,7 @@ const timePeriodsController = require("./timePeriodsController");
 const adminController = require("./adminController");
 
 const controllers = {
-  handleLogIn,
-  handleLogout,
-  handleRefreshToken,
+  ...authController,
   ...userController,
   ...abonementController,
   ...ordersController,

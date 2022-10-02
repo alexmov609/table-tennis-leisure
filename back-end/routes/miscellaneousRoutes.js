@@ -13,6 +13,11 @@ const miscellaneousRoutes = (router) => {
     process.env.REACT_APP_READ_UNAVAILABLE_TIME_PERIODS,
     controllers.readUnavaliableTimePeriods
   );
+  router.post(
+    process.env.REACT_APP_SEND_USER_COMMENT,
+    csrfDefence,
+    controllers.sendUserComment
+  );
 };
 
 module.exports = miscellaneousRoutes;

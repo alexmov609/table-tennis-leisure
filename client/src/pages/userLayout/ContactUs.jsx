@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to send a report to administrator
 const ContactUs = () => {
@@ -15,7 +16,10 @@ const ContactUs = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    fetch(
+      process.env.REACT_APP_SEND_USER_COMMENT,
+      corsMaker({ method: "POST", body: data })
+    );
   };
 
   return (

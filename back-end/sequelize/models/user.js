@@ -42,6 +42,14 @@ module.exports = (sequelize) => {
         beforeCreate: async (user, options) => {
           user.password = await encryptPassword(user.password);
         },
+        // beforeBulkUpdate: async (user, options) => {
+        //   user.attributes.password = await encryptPassword(
+        //     user.attributes.password
+        //   );
+        // },
+        beforeUpdate: async (user, options) => {
+          user.password = await encryptPassword(user.password);
+        },
       },
     }
   );
