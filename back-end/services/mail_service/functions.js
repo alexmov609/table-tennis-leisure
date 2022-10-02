@@ -1,4 +1,5 @@
 const sendMail = require("./transporter");
+const auxillary_functions = require("../../auxillary_functions");
 
 const sendVouchers = async (toUsers) => {
   toUsers = transformUsersArray(toUsers);
@@ -11,7 +12,7 @@ const sendVouchers = async (toUsers) => {
       orders.length
     )
       .fill()
-      .map((_) => generateVoucher())}`;
+      .map((_) => auxillary_functions.generateNumber())}`;
     sendMail(email, "Cancellation of orders", text);
   });
 };
@@ -28,12 +29,6 @@ const transformUsersArray = (users) => {
     return acc;
   }, []);
 };
-const generateVoucher = () => {
-  return Array(10)
-    .fill()
-    .map((_) => Math.floor(Math.random() * 10))
-    .join("");
-};
 
-const auxillary_functions = { sendVouchers };
-module.exports = auxillary_functions;
+const functions = { sendVouchers };
+module.exports = functions;

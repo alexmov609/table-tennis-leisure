@@ -1,3 +1,4 @@
-const auxiliaryFunctions = require("./auxiliaryFunctions");
+const functions = require("./functions");
+const sendMail = require("./transporter");
 
-module.exports = auxiliaryFunctions;
+module.exports = { ...functions, sendMail };
