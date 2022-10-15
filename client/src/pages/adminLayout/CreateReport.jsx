@@ -170,9 +170,11 @@ const CreateReport = () => {
     <div className="flex flex-col m-2 md:m-10 mt-24 p-2 md:p-10 bg-zinc-100 rounded-3xl">
       <div className="flex flex-row">
         {/**Start-end date */}
-        <form className="flex flex-row md:flex-col" onSubmit={handleSubmit}>
+        <form className="flex flex-row items-center md:flex-col" onSubmit={handleSubmit}>
           <div className="flex flex-col w-29 m-2">
-            <label htmlFor="start_date">Start date</label>
+            <label htmlFor="start_date" style={{ "text-align": "center" }}>
+              Start date
+            </label>
             <input
               type="date"
               name="start_date"
@@ -180,8 +182,10 @@ const CreateReport = () => {
               className="border bg-gray-200 p-2"
             />
           </div>
-          <div className="flex flex-col w-29 m-2">
-            <label htmlFor="end_date">End date</label>
+          <div className="flex flex-col  w-29 m-2">
+            <label htmlFor="end_date" style={{ "text-align": "center" }}>
+              End date
+            </label>
             <input
               type="date"
               name="end_date"
@@ -189,7 +193,17 @@ const CreateReport = () => {
               className="border  bg-gray-200 p-2"
             />
           </div>
-          <button type="submit">Submit</button>
+          <button
+            style={{
+              backgroundColor: currentColor,
+              color: "white",
+              borderRadius: "5px",
+            }}
+            className={`text-xl p-1 w-36 border-lg hover:drop-shadow-xl`}
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
         {isLoading && <p>Loading</p>}
         {fetchErr && <p>{fetchErr}</p>}

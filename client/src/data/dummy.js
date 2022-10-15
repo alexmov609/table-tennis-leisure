@@ -160,11 +160,6 @@ export const userlinks = [
     title: "Orders",
     links: [
       {
-        name: "UserApp/orderTimeChoice",
-        namefront: "order time choice",
-        icon: <FaLayerGroup />,
-      },
-      {
         name: "UserApp/myOrders",
         namefront: "my orders",
         icon: <FcTimeline />,

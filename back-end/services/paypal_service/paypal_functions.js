@@ -63,7 +63,7 @@ const processPayPalOrder = async (request, response) => {
   try {
     const order = await paypalClient.execute(result);
     console.log(order);
-    // response.json({ id: order.result.id });
+    response.json({ id: order.result.id });
   } catch (e) {
     response.status(500).json({ error: e.message, sent: "sent" });
   }

@@ -104,7 +104,9 @@ const AddAbonement = () => {
               className="flex flex-col"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <h2 className="text-black">Creating abonement</h2>
+              <h2 className="text-black text-2xl font-bold py-4 " style={{ "text-align": "center" }}>
+                Create abonement
+              </h2>
               <input
                 className="bg-[#ccd6f6] p-2 text-black my-10"
                 name="name_of_abonement"
