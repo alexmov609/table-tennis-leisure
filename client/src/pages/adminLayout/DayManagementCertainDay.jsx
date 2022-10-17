@@ -7,7 +7,6 @@ import { corsMaker } from "../../data/dummy";
 // Administrator can change work hours or block/unblock each of days
 const DayManagmentCertainDay = () => {
   const { currentColor } = useStateContext();
-  const [blockedDays, setBlockedDays] = useState([]);
   const [basicDaysSchedule, setBasicDaysSchedule] = useState([]);
 
   const weekDays = [
@@ -38,7 +37,7 @@ const DayManagmentCertainDay = () => {
   };
 
   const handleBlockUnBlock = (i) => {
-    if (isDayBlocked(i) && blockedDays.length > 0) {
+    if (isDayBlocked(i)) {
       fetch(
         process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
         corsMaker({
@@ -46,7 +45,7 @@ const DayManagmentCertainDay = () => {
           body: { day_id: i, open: "08:00", close: "17:00" },
         })
       );
-      setBlockedDays((prev) => prev.filter(({ day_id }) => day_id !== i));
+      
       setBasicDaysSchedule((prev) =>
         prev.map((el, ind) => {
           return ind === i ? { open: "08:00", close: "17:00" } : el;
@@ -60,7 +59,6 @@ const DayManagmentCertainDay = () => {
           body: { day_id: i, open: "-----", close: "-----" },
         })
       );
-      setBlockedDays((prev) => [...prev, { day_id: i }]);
       setBasicDaysSchedule((prev) =>
         prev.map((el, ind) => {
           return ind === i ? { open: "-----", close: "-----" } : el;
@@ -69,7 +67,7 @@ const DayManagmentCertainDay = () => {
     }
   };
   const isDayBlocked = (i) => {
-    return !!blockedDays.find(({ day_id }) => day_id === i);
+    return basicDaysSchedule[i].close==='-----';
   };
 
   const handleSubmit = (i) => {

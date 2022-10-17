@@ -10,6 +10,7 @@ import {
   Resize,
 } from "@syncfusion/ej2-react-schedule";
 import "./Calendar.css";
+import { L10n } from "@syncfusion/ej2-base";
 
 import { Header } from "../components";
 import { OrderTimeChoice } from "./userLayout";
@@ -17,6 +18,16 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useOutletContext } from "react-router-dom";
 import useFetch from "../custom_hooks/useFetch";
 
+
+L10n.load({
+  "en-US": {
+    schedule: {
+      saveButton: "",
+      cancelButton: "",
+      newEvent: "",
+    },
+  },
+});
 //Components that represents Calendar which functionality depends on authorities of an user.
 // Regular user and administrator will see different content in this component
 const Calendar = (props) => {
@@ -141,8 +152,6 @@ const Calendar = (props) => {
             <ViewDirective option="Month" showWeekNumber={true}></ViewDirective>
             <ViewDirective
               option="Day"
-              startHour="9:00"
-              endHour="21:00"
             ></ViewDirective>
           </ViewsDirective>
           <Inject services={[Day, Week, Month, Resize]} />

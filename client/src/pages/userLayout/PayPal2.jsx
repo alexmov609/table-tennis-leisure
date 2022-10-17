@@ -2,7 +2,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { corsMaker } from "../../data/dummy";
 
 //Paypal buttons
-function PayPal2({ chosenTimePeriods }) {
+function PayPal2({ chosenTimePeriods,disabled }) {
   const createOrder = () => {
     return fetch(
       process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
@@ -36,7 +36,6 @@ function PayPal2({ chosenTimePeriods }) {
   const onError = (error) => {
     console.log(error);
   };
-
   return (
     <PayPalScriptProvider
       options={{
@@ -46,6 +45,7 @@ function PayPal2({ chosenTimePeriods }) {
       }}
     >
       <PayPalButtons
+        disabled={!disabled}
         createOrder={createOrder}
         onApprove={onApprove}
         onError={onError}

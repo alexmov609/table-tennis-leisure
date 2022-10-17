@@ -68,7 +68,7 @@ const CreateReport = () => {
           show,
           btn: (
             <>
-              <div key={uuid()} className="flex flex-col md:flex-row ">
+              <div key={uuid()}>
                 <button
                   style={{ backgroundColor: currentColor }}
                   className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1 hover:scale-105 ease-in duration-300"
@@ -87,7 +87,7 @@ const CreateReport = () => {
   }, [currentColor]);
   useEffect(() => {
     setChartsArray(
-      [Bar, ColorMapping, Table, Pyramid, Doughnut, Table].map(
+      [Bar, ColorMapping, Table, Doughnut, Doughnut, Table].map(
         (Component, i) => {
           if (i === 2)
             return (
@@ -103,7 +103,7 @@ const CreateReport = () => {
               <>
                 {buttonsArray[i].show && (
                   <>
-                    <div className="flex flex-col md:flex-row flex justify-center">
+                    <div className="flex flex-col md:flex-row justify-center">
                       <form
                         className="flex flex-col w-30 m-2"
                         onSubmit={handleSubmit}
@@ -167,12 +167,15 @@ const CreateReport = () => {
   }
 
   return (
-    <div className="flex flex-col m-2 md:m-10 mt-24 p-2 md:p-10 bg-zinc-100 rounded-3xl">
-      <div className="flex flex-row">
+    <div className="flex flex-col  m-2 md:m-10 mt-24 p-2 md:p-10 bg-zinc-100 rounded-3xl">
+      <div className="flex flex-col lg:flex-row items-center ">
         {/**Start-end date */}
-        <form className="flex flex-row items-center md:flex-col" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col items-center "
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col w-29 m-2">
-            <label htmlFor="start_date" style={{ "text-align": "center" }}>
+            <label htmlFor="start_date" style={{ textAlign: "center" }}>
               Start date
             </label>
             <input
@@ -183,7 +186,7 @@ const CreateReport = () => {
             />
           </div>
           <div className="flex flex-col  w-29 m-2">
-            <label htmlFor="end_date" style={{ "text-align": "center" }}>
+            <label htmlFor="end_date" style={{ textAlign: "center" }}>
               End date
             </label>
             <input

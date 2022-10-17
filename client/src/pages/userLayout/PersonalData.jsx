@@ -14,7 +14,7 @@ import { corsMaker } from "../../data/dummy";
 //User can update its personal data
 const PersonalData = () => {
   const { currentColor } = useStateContext();
-  const { person, user, userAbonement } = useOutletContext();
+  const { person, user, userAbonement,setPerson } = useOutletContext();
   const [isDisabled, setIsDisabled] = useState(true);
   let navigate = useNavigate();
   const { first_name, surname, passport, date_of_birth } = person;
@@ -35,12 +35,12 @@ const PersonalData = () => {
       surname,
       passport,
       email,
-      password,
-      confirmPassword: "",
       date_of_birth,
     },
   });
   const onSubmit = async (data) => {
+    setPerson(data)
+    setIsDisabled(true);
     await fetch(
       process.env.REACT_APP_UPDATE_PERSON,
       corsMaker({
@@ -111,28 +111,6 @@ const PersonalData = () => {
                   />
                 </div>
                 <div className="flex flex-col py-2">
-                  <label className="uppercase text-sm py-2">Password</label>
-                  <input
-                    className="border-2 rounded-lg p-3 flex border-gray-300"
-                    type="password"
-                    name="password"
-                    disabled={isDisabled}
-                    {...register("password")}
-                  />
-                </div>
-                <div className="flex flex-col py-2">
-                  <label className="uppercase text-sm py-2">
-                    Confirm password
-                  </label>
-                  <input
-                    className="border-2 rounded-lg p-3 flex border-gray-300"
-                    type="password"
-                    name="confirmPassword"
-                    disabled={isDisabled}
-                    {...register("confirmPassword")}
-                  />
-                </div>
-                <div className="flex flex-col py-2">
                   <label className="uppercase text-sm py-2">
                     Date of birth
                   </label>
@@ -147,6 +125,7 @@ const PersonalData = () => {
                 <button
                   style={{ backgroundColor: currentColor }}
                   className="w-full p-4  text-gray-100 mt-4 rounded-full"
+                
                 >
                   Confirm changes
                 </button>

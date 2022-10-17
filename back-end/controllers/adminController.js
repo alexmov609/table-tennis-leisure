@@ -64,8 +64,8 @@ const readCustomersAges = async (request, response) => {
           .send("readCustomersAges. !readCustomersAges");
       }
       response.json(
-        customersAges.map((el) => {
-          return { ...el, text: `Age: ${el.x}  Amount: ${el.y}` };
+        customersAges.map(({x,y}) => {
+          return { y, text: ` Amount: ${y}`,x:`${x} years old` };
         })
       );
     });

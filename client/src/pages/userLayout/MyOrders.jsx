@@ -17,9 +17,9 @@ import {
 import { contextMenuItems, corsMaker, ordersGrid } from "../../data/dummy";
 import Header from "../../components/Header";
 import OrderTimeChoice from "./OrderTimeChoice";
+import { L10n } from "@syncfusion/ej2-base";
 
 import { useOutletContext } from "react-router-dom";
-
 //Component that gives to an user an option to browse its orders
 //User can also change/delete any of its orders
 const MyOrders = () => {
@@ -41,15 +41,23 @@ const MyOrders = () => {
     //   );
     // }
   };
+  // L10n.load({
+  //   "en-US": {
+  //     grid: {
+  //       SaveButton: "",
+  //       CancelButton: "",
+        
+  //     },
+  //   },
+  // });
 
-  const actionComplete = () => {
-    console.log("complete");
-  };
   const editing = {
     allowDeleting: true,
     allowEditing: true,
     mode: "Dialog",
     template: editorTemplate,
+    headerTemplate: " ",
+    footerTemplate: " ",
   };
 
   const toolbarOptions = ["Edit", "Delete", "Search"];
@@ -67,7 +75,6 @@ const MyOrders = () => {
         editSettings={editing}
         toolbar={toolbarOptions}
         actionBegin={actionBegin}
-        // actionComplete={actionComplete}
       >
         <ColumnsDirective>
           {ordersGrid.map((item, index) => (

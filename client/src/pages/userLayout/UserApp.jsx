@@ -98,6 +98,7 @@ const UserApp = () => {
                     abonementsToChoose,
                     person,
                     unavailableTimePeriods,
+                    setPerson,
                   }}
                 />
               ) : (
