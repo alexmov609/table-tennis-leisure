@@ -32,7 +32,7 @@ L10n.load({
 // Regular user and administrator will see different content in this component
 const Calendar = (props) => {
   const { authentication } = useStateContext();
-  const { unavailableTimePeriods, allOrderedTimePeriods,orders } = useOutletContext();
+  const { unavailableTimePeriods, allOrderedTimePeriods,orders,userAbonement } = useOutletContext();
   const { authorities } = authentication;
   const [blockedDates, setBlockedDates] = useState([]);
   const [blockedDays, setBlockedDays] = useState([]);
@@ -55,7 +55,7 @@ const Calendar = (props) => {
       const year = args.StartTime.getYear() + 1900;
       dateOfGame = `${year}-${month}-${day}`;
     }
-    return <OrderTimeChoice dateOfGame={dateOfGame} />;
+    return <OrderTimeChoice dateOfGame={dateOfGame} abonement={userAbonement} />;
   };
   const onPopupOpen = (args) => {
     if (authorities === 2) {
@@ -103,6 +103,8 @@ const Calendar = (props) => {
     ) {
       args.scheduleObj.element.classList.add("e-disableCell");
     }
+    
+    
   };
 
   return (
@@ -118,30 +120,53 @@ const Calendar = (props) => {
           showQuickInfo={false}
           height="650px"
           eventSettings={{
-            dataSource: (() =>
-              allOrderedTimePeriods || unavailableTimePeriods)().map(
-              ({ date_of_game, start_time, end_time }) => {
-                const date = date_of_game.split("-");
-                start_time = start_time.split(":");
-                end_time = end_time.split(":");
-                return {
-                  StartTime: new Date(
-                    date[0],
-                    date[1] - 1,
-                    date[2],
-                    start_time[0],
-                    start_time[1]
-                  ),
-                  EndTime: new Date(
-                    date[0],
-                    date[1] - 1,
-                    date[2],
-                    end_time[0],
-                    end_time[1]
-                  ),
-                };
-              }
-            ),
+            dataSource:
+              authorities === 2
+                ? (() => allOrderedTimePeriods || unavailableTimePeriods)().map(
+                    ({ date_of_game, start_time, end_time }) => {
+                      const date = date_of_game.split("-");
+                      start_time = start_time.split(":");
+                      end_time = end_time.split(":");
+                      return {
+                        StartTime: new Date(
+                          date[0],
+                          date[1] - 1,
+                          date[2],
+                          start_time[0],
+                          start_time[1]
+                        ),
+                        EndTime: new Date(
+                          date[0],
+                          date[1] - 1,
+                          date[2],
+                          end_time[0],
+                          end_time[1]
+                        ),
+                      };
+                    }
+                  )
+                : 
+                (orders.map(({ date_of_game, start_time, end_time }) => {
+                      const date = date_of_game.split("-");
+                      start_time = start_time.split(":");
+                      end_time = end_time.split(":");
+                      return {
+                        StartTime: new Date(
+                          date[0],
+                          date[1] - 1,
+                          date[2],
+                          start_time[0],
+                          start_time[1]
+                        ),
+                        EndTime: new Date(
+                          date[0],
+                          date[1] - 1,
+                          date[2],
+                          end_time[0],
+                          end_time[1]
+                        ),
+                      };
+                    })),
           }}
         >
           {/*to see custom view of calendar in header of calendar */}
@@ -149,9 +174,7 @@ const Calendar = (props) => {
             {/*first option as default have week view too*/}
             {/*show week number in left of cal*/}
             <ViewDirective option="Month" showWeekNumber={true}></ViewDirective>
-            <ViewDirective
-              option="Day"
-            ></ViewDirective>
+            <ViewDirective option="Day"></ViewDirective>
           </ViewsDirective>
           <Inject services={[Day, Week, Month, Resize]} />
         </ScheduleComponent>

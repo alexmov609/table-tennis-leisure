@@ -36,7 +36,7 @@ const ChooseAbonement = () => {
                 </span>
                 <div>
                   <p className="text-6xl font-bold py-4 flex">
-                    {price}
+                    {price}$
                     <span className="text-xl text-slate-500 flex flex-col justify-end">
                       /mo
                     </span>

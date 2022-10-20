@@ -9,14 +9,15 @@ import { corsMaker } from "../../data/dummy";
 
 
 //Component that gives to an user an option to place an order
-const OrderTimeChoice = ({ dateOfGame }) => {
-  
+const OrderTimeChoice = ({ dateOfGame,abonement }) => {
+  console.log(abonement);
   let today = new Date().toLocaleDateString().split(".");
   today = `${today[2]}-${today[1]}-${today[0]}`;
 
   const [chosenTimePeriods, setChosenTimePeriods] = useState([]);
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
-  const { currentColor,currentMode } = useStateContext();
+  const { currentColor,currentMode} = useStateContext();
+  
 
   const [urlsArray, setUrlsArray] = useState([
     {
@@ -58,11 +59,15 @@ const OrderTimeChoice = ({ dateOfGame }) => {
       });
     }
   };
+
+
+  const handleOrder = (chosenTimePeriods) => {
+      // return fetch();
+   console.log(chosenTimePeriods);
+  };
  console.log(currentMode);
   return (
-    <div
-      className="min-w-full flex flex-col items-center"
-    >
+    <div className="min-w-full flex flex-col items-center">
       <p className="text-2xl font-bold py-4">Selected date: {dateOfGame}</p>
       {/**left part of a page */}
       <div className="w-full flex flex-col text-center">
@@ -91,12 +96,21 @@ const OrderTimeChoice = ({ dateOfGame }) => {
           )}
       </div>
 
-      <button className="pt-8">
-        <PayPal2
-          chosenTimePeriods={chosenTimePeriods}
-          disabled={chosenTimePeriods.length > 0}
-        />
-      </button>
+      {abonement.name_of_abonement === "free" ? (
+        <button className="pt-8">
+          <PayPal2
+            chosenTimePeriods={chosenTimePeriods}
+            disabled={chosenTimePeriods.length > 0}
+          />
+        </button>
+      ) : (
+        <button
+          className="w-64 rounded-full text-white py-4 my-4 bg-slate-500 hover:bg-slate-800 "
+          onClick={handleOrder(chosenTimePeriods)}
+        >
+          Add order
+        </button>
+      )}
     </div>
   );
 };
