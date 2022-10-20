@@ -69,7 +69,8 @@ const createUser = async (request, response) => {
 const updateUserAbonement = async (request, response) => {
   const user_id = request.user_id;
   const { abonement } = request.body;
-  await users.update({ abonement }, { where: { user_id } });
+  console.log(request.body);
+  await users.update({ abonement}, { where: { user_id } });
   // .then((obtainedUser) => {
   //   if (!obtainedUser) {
   //     return response.status(403).send("!user Read");
@@ -89,5 +90,5 @@ const updateUserTheme = async (request, response) => {
   // });
 };
 
-const userController = { readUser, createUser, updateUserTheme };
+const userController = { readUser, createUser,updateUserAbonement , updateUserTheme };
 module.exports = userController;

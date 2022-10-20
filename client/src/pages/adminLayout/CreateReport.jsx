@@ -68,10 +68,10 @@ const CreateReport = () => {
           show,
           btn: (
             <>
-              <div key={uuid()}>
+              <div key={uuid()} className="flex flex-row items-center">
                 <button
                   style={{ backgroundColor: currentColor }}
-                  className="w-36 h-16 p-1 text-gray-100 mt-0.5 mx-1 hover:scale-105 ease-in duration-300"
+                  className="w-36 h-14 pt-1 pb-10 text-gray-100 mt-0.5 mx-1 hover:scale-105 ease-in duration-300"
                   onClick={(_) => {
                     handleShow(i);
                   }}
@@ -93,7 +93,10 @@ const CreateReport = () => {
             return (
               <>
                 {buttonsArray[i].show && (
-                  <Component dataToShow={data[i]} grid={userGrid} />
+                  <Component dataToShow={data[i].map(((el) => ({
+        ...el,
+        profit: parseInt(el.profit),
+      })))} grid={userGrid} />
                 )}
               </>
             );

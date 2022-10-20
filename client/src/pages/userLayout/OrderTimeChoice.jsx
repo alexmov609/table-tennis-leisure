@@ -53,7 +53,7 @@ const OrderTimeChoice = ({ dateOfGame }) => {
       setChosenTimePeriods([...chosenTimePeriods, name]);
       setFilteredtimePeriods((prev) => {
         return prev.map((el) =>
-          el.time_period_id === tmp ? { ...el, backgroundColor: "black" } : el
+          el.time_period_id === tmp ? { ...el, backgroundColor: "#021691" } : el
         );
       });
     }

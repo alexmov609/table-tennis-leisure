@@ -7,12 +7,19 @@ import { Header } from "../../components";
 const ChooseAbonement = () => {
   const handleClick = (item) => {
     console.log(item);
+    setUserAbonement(item)
+    fetch("/updateUserAbonement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json","x-xsrf-token":localStorage.getItem("csrf")},
+      body: JSON.stringify({abonement:item.id_abonement}),
+    });
   };
-  const { currentColor } = useStateContext();
-  const { abonementsToChoose } = useOutletContext();
+  const { currentColor,currentMode } = useStateContext();
+  const { abonementsToChoose ,userAbonement,setUserAbonement} = useOutletContext();
 
   return (
     <div
+    
       name="Abonements"
       className="w-full mt-0 text-white bg-zinc-100  dark:bg-gray-800 text-center"
     >
@@ -38,13 +45,14 @@ const ChooseAbonement = () => {
 
                 <div className="text-2xl">
                   <p className="flex py-4">
-                    <CheckIcon className="w-8 mr-5 text-green-600" />
+                    <CheckIcon className="w-8 mr-5 text-green-600"  />
                     {description}
                   </p>
                   <button
-                    style={{ backgroundColor: currentColor }}
+                    style={{ backgroundColor:userAbonement.name_of_abonement===name_of_abonement?"grey": currentColor }}
                     className="w-full rounded-full py-4 my-4 "
                     onClick={() => handleClick(item)}
+                    disabled={userAbonement.name_of_abonement===name_of_abonement?true:false}
                   >
                     Get Started
                   </button>

@@ -96,6 +96,7 @@ const UserApp = () => {
                     orders,
                     userAbonement,
                     abonementsToChoose,
+                    setUserAbonement,
                     person,
                     unavailableTimePeriods,
                     setPerson,

@@ -10,6 +10,11 @@ const userRoutes = (router) => {
     csrfDefence,
     controllers.updateUserTheme
   );
+  router.post(
+    "/updateUserAbonement",
+    csrfDefence,
+    controllers.updateUserAbonement
+  );
 };
 
 module.exports = userRoutes;

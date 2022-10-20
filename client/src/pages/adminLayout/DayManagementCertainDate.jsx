@@ -107,23 +107,25 @@ const DayManagementCertainDate = () => {
         setBlockedDates={setBlockedDates}
       />
       {/**Side component with info day chosen in calendar*/}
-      <div className=" min-w-[50%] bg-white text-slate-900 m-4 p-8 rounded-xl shadow-2xl relative">
-        <div className="flex flex-row item-">
-          <span className="uppercase px-3 py-1 bg-indigo-200 text-indigo-900 rounded-2xl text-sm">
+      <div className=" min-w-[40%] bg-white text-slate-900 m-4 p-8 rounded-xl shadow-2xl relative">
+        <div className="flex flex-col items-center font-bold">
+          <span className="uppercase px-3 py-1 bg-indigo-200 text-indigo-900 rounded-2xl text-lg">
             {dateOfGame}
           </span>
         </div>
 
-        <div className="flex flex-row-2 ">
+        <div className="min-w-[50%] flex flex-row-2 ">
           <div className="flex flex-col  ml-10">
             <div className="flex flex-row space-x-4">
-              <h2>Tables</h2>
-              <h2>Time periods</h2>
+              <h2 className="text-2xl font-bold ">Tables</h2>
+              <h2 className="text-2xl font-bold ">Time periods</h2>
             </div>
             {filteredTimePeriods.map(({ start_time, end_time, c }) => {
               return (
                 <div key={uuid()} className="flex flex-row">
-                  <p className="w-full p-1 mt-0.5">{c ? c : 0} </p>
+                  <p className="w-full p-1 mt-0.5 text-center text-xl font-bold">
+                    {c ? c : 0}{" "}
+                  </p>
                   <button
                     className="w-full p-1 bg-slate-700 hover:bg-slate-500 text-gray-100 mt-0.5"
                     style={{
@@ -136,7 +138,7 @@ const DayManagementCertainDate = () => {
               );
             })}
           </div>
-          <div className="flex flex-col mx-8">
+          <div className="flex flex-col mx-3">
             {new Date(dateOfGame) > new Date() && (
               <button
                 onClick={() => {

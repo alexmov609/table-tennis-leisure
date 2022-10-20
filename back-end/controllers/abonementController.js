@@ -6,7 +6,7 @@ const { abonements, users } = DBManager.models;
 const readAbonement = async (request, response) => {
   const user_id = request.user_id;
   let receivedAbonement = await abonements.findOne({
-    attributes: ["name_of_abonement", "description", "price"],
+    attributes: ["name_of_abonement", "description", "price",],
     include: [
       {
         model: users,
@@ -23,7 +23,7 @@ const readAbonement = async (request, response) => {
 const readAllAbonements = async (request, response) => {
   let receivedAllAbonements = await abonements.findAll({
     // raw: true,
-    attributes: ["name_of_abonement", "description", "price"],
+   
   });
   if (!receivedAllAbonements)
     return response.status(404).send({ msg: "Abonements were not found" });

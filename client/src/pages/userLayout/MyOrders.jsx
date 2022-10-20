@@ -41,15 +41,6 @@ const MyOrders = () => {
     //   );
     // }
   };
-  // L10n.load({
-  //   "en-US": {
-  //     grid: {
-  //       SaveButton: "",
-  //       CancelButton: "",
-        
-  //     },
-  //   },
-  // });
 
   const editing = {
     allowDeleting: true,

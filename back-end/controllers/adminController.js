@@ -172,7 +172,9 @@ const readUsersDataByPayment = async (request, response) => {
       if (!profit) {
         return response.status(400).send("readProfit. !readProfit");
       }
-      response.json(profit);
+      response.json(
+       profit
+      );
     });
 };
 
