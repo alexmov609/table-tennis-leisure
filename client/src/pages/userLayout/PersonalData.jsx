@@ -52,7 +52,9 @@ const PersonalData = () => {
         console.log("Updated Successfully");
       }
     });
-  };
+    console.log(data)
+  }
+
 
   return (
     <div
@@ -91,14 +93,21 @@ const PersonalData = () => {
                   </div>
                 </div>
                 <div className="flex flex-col py-2">
-                  <label className="uppercase text-sm py-2">Passport No</label>
+                  <label className="uppercase text-sm py-2">Id</label>
                   <input
                     className="border-2 rounded-lg p-3 flex border-gray-300"
                     type="number"
                     name="passport"
                     disabled={isDisabled}
-                    {...register("passport")}
+                    {...register("passport", {
+                      required: "Passport is required",
+                      pattern: {
+                        value: /^[0-9]{9}$/,
+                        message: "*must enter 9 digits",
+                      },
+                    })}
                   />
+                  {errors.passport?.message}
                 </div>
                 <div className="flex flex-col py-2">
                   <label className="uppercase text-sm py-2">Email</label>
@@ -125,7 +134,6 @@ const PersonalData = () => {
                 <button
                   style={{ backgroundColor: currentColor }}
                   className="w-full p-4  text-gray-100 mt-4 rounded-full"
-                
                 >
                   Confirm changes
                 </button>

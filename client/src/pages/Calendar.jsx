@@ -32,7 +32,7 @@ L10n.load({
 // Regular user and administrator will see different content in this component
 const Calendar = (props) => {
   const { authentication } = useStateContext();
-  const { unavailableTimePeriods, allOrderedTimePeriods } = useOutletContext();
+  const { unavailableTimePeriods, allOrderedTimePeriods,orders } = useOutletContext();
   const { authorities } = authentication;
   const [blockedDates, setBlockedDates] = useState([]);
   const [blockedDays, setBlockedDays] = useState([]);
@@ -89,8 +89,7 @@ const Calendar = (props) => {
   const onRenderCell = (args) => {
     authorities === 1 &&
       args.scheduleObj.date < new Date() &&
-      args.scheduleObj.element.classList.add("e-disableCell");
-
+      args.scheduleObj.element.classList.add("e-disableCell")
     if (
       !!args.scheduleObj.date &&
       (!!blockedDays.find(

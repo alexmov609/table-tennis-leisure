@@ -69,8 +69,8 @@ const SignUp = () => {
                   required: "*first name is required",
                 })}
               />
-              {errors.firstName?.type === "required" &&
-                errors.firstName.message}
+              {errors.first_name?.type === "required" &&
+                errors.first_name.message}
             </div>
             <div>
               <input
@@ -80,7 +80,7 @@ const SignUp = () => {
                 placeholder="Surname"
                 {...register("surname", { required: "*surname is required" })}
               />
-              {errors.surname?.type === "required" && errors.surname.message}
+              {errors.surname?.message}
             </div>
 
             <div>
@@ -88,9 +88,16 @@ const SignUp = () => {
                 className=" mb-2  border relative border-gray-300 rounded-lg bg-gray-200 p-2"
                 name="passport"
                 type="text"
-                placeholder="Passport id"
-                {...register("passport")}
+                placeholder="Id"
+                {...register("passport", {
+                  required: "Passport is required",
+                  pattern: {
+                    value: /^[0-9]{9}$/,
+                    message: "*must enter 9 digits",
+                  },
+                })}
               />
+              {errors.passport?.message}
             </div>
             <div>
               <input
@@ -98,14 +105,12 @@ const SignUp = () => {
                 name="email"
                 type="text"
                 placeholder="Email"
-                {...register("email", { required: true })}
+                {...register("email", { required: true},)}
               />
               {errors.email?.type === "required" && (
                 <p className="text-red z-10">*email is required</p>
               )}
-              {register.email?.includes("@") === false && (
-                <p className="text-red z-10">*not correct email</p>
-              )}
+        
             </div>
             <div>
               <input

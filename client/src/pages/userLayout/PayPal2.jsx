@@ -23,6 +23,7 @@ function PayPal2({ chosenTimePeriods,disabled }) {
       });
   };
   const onApprove = (data, actions) => {
+    console.log(data);
     return actions.order.capture().then(function (captureData) {
       // Successful capture! For dev/demo purposes:];
       alert(`Transaction was complete by ${captureData.payer.name.given_name}`);
