@@ -16,7 +16,7 @@ const OrderTimeChoice = ({ dateOfGame,abonement }) => {
 
   const [chosenTimePeriods, setChosenTimePeriods] = useState([]);
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
-  const { currentColor,currentMode} = useStateContext();
+  const { currentColor,currentMode,authentication} = useStateContext();
   
 
   const [urlsArray, setUrlsArray] = useState([
@@ -96,7 +96,7 @@ const OrderTimeChoice = ({ dateOfGame,abonement }) => {
           )}
       </div>
 
-      {abonement.name_of_abonement === "free" ? (
+      {authentication.authorities===1&&abonement.name_of_abonement === "free" ? (
         <button className="pt-8">
           <PayPal2
             chosenTimePeriods={chosenTimePeriods}
