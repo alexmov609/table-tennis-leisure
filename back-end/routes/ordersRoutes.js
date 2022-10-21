@@ -16,6 +16,11 @@ const ordersRoutes = (router) => {
     csrfDefence,
     controllers.deleteOrder
   );
+  router.post(
+    process.env.REACT_APP_CREATE_ORDERS,
+    csrfDefence,
+    controllers.createOrders
+  );
 };
 
 module.exports = ordersRoutes;

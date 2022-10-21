@@ -7,17 +7,14 @@ import PayPal2 from "./PayPal2";
 import useFetch from "../../custom_hooks/useFetch";
 import { corsMaker } from "../../data/dummy";
 
-
 //Component that gives to an user an option to place an order
-const OrderTimeChoice = ({ dateOfGame,abonement }) => {
-  console.log(abonement);
+const OrderTimeChoice = ({ dateOfGame, abonement }) => {
   let today = new Date().toLocaleDateString().split(".");
   today = `${today[2]}-${today[1]}-${today[0]}`;
 
   const [chosenTimePeriods, setChosenTimePeriods] = useState([]);
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
-  const { currentColor,currentMode} = useStateContext();
-  
+  const { currentColor, currentMode } = useStateContext();
 
   const [urlsArray, setUrlsArray] = useState([
     {
@@ -60,12 +57,11 @@ const OrderTimeChoice = ({ dateOfGame,abonement }) => {
     }
   };
 
-
   const handleOrder = (chosenTimePeriods) => {
-      // return fetch();
-   console.log(chosenTimePeriods);
+    // return fetch();
+    console.log(chosenTimePeriods);
   };
- console.log(currentMode);
+
   return (
     <div className="min-w-full flex flex-col items-center">
       <p className="text-2xl font-bold py-4">Selected date: {dateOfGame}</p>
@@ -101,6 +97,7 @@ const OrderTimeChoice = ({ dateOfGame,abonement }) => {
           <PayPal2
             chosenTimePeriods={chosenTimePeriods}
             disabled={chosenTimePeriods.length > 0}
+            dateOfGame={dateOfGame}
           />
         </button>
       ) : (

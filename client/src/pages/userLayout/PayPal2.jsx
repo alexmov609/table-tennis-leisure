@@ -2,7 +2,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { corsMaker } from "../../data/dummy";
 
 //Paypal buttons
-function PayPal2({ chosenTimePeriods,disabled }) {
+function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
   const createOrder = () => {
     return fetch(
       process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
@@ -22,18 +22,24 @@ function PayPal2({ chosenTimePeriods,disabled }) {
         console.log(error);
       });
   };
-  const onApprove = (data, actions) => {
-    console.log(data);
-
-    return actions.order.capture().then(function (captureData) {
-      // Successful capture! For dev/demo purposes:];
-      alert(`Transaction was complete by ${captureData.payer.name.given_name}`);
-      console.log(captureData);
-      // When ready to go live, remove the alert and show a success message within this page. For example:
-      // const element = document.getElementById('paypal-button-container');
-      // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-      // Or go to another URL:  actions.redirect('thank_you.html');
-    });
+  const onApprove = async (data, actions) => {
+    // return actions.order.capture().then(function (captureData) {
+    //   // Successful capture! For dev/demo purposes:];
+    //   // alert(`Transaction was complete by ${captureData.payer.name.given_name}`);
+    //   // console.log(captureData);
+    //   // When ready to go live, remove the alert and show a success message within this page. For example:
+    //   // const element = document.getElementById('paypal-button-container');
+    //   // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+    //   // Or go to another URL:  actions.redirect('thank_you.html');
+    // });
+    await fetch(
+      process.env.REACT_APP_CREATE_ORDERS,
+      corsMaker({
+        method: "POST",
+        body: { chosenTimePeriods, dateOfGame },
+      })
+    );
+    return;
   };
   const onError = (error) => {
     console.log(error);
