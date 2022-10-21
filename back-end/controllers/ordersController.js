@@ -33,25 +33,24 @@ const updateOrder = async (request, response) => {
 
 const createOrders = async (request, response) => {
   const user_id = request.user_id;
-  const { chosenTimePeriods, dateOfGame } = request.body;
+  const { chosenTimePeriods, dateOfGame,name_abonement } = request.body;
   let bulkData = await readPricesOfCertainTimePeriods(chosenTimePeriods);
+
   bulkData = bulkData.map(({ start_time, end_time, price }) => ({
     user_id,
     date_of_game: dateOfGame,
     start_time,
     end_time,
-    payment: price,
+    payment: name_abonement==="free"?price:0,
     payment_status: true,
   }));
+    console.log(bulkData);
+    console.log(name_abonement);
 
   await orders.bulkCreate(bulkData);
 
-  // .then((createdPerson) => {
-  //   if (!createdPerson) {
-  //     return response.status(403).send("!user Read");
-  //   }
-  //   response.json(createdPerson);
-  // });
+
+    response.json("create");
 };
 
 const deleteOrder = async (request, response) => {

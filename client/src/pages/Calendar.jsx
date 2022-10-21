@@ -55,7 +55,7 @@ const Calendar = (props) => {
       const year = args.StartTime.getYear() + 1900;
       dateOfGame = `${year}-${month}-${day}`;
     }
-    return <OrderTimeChoice dateOfGame={dateOfGame} abonement={userAbonement} />;
+    return <OrderTimeChoice dateOfGame={dateOfGame}  />;
   };
   const onPopupOpen = (args) => {
     if (authorities === 2) {
@@ -174,7 +174,7 @@ const Calendar = (props) => {
             {/*first option as default have week view too*/}
             {/*show week number in left of cal*/}
             <ViewDirective option="Month" showWeekNumber={true}></ViewDirective>
-            <ViewDirective option="Day"></ViewDirective>
+           
           </ViewsDirective>
           <Inject services={[Day, Week, Month, Resize]} />
         </ScheduleComponent>

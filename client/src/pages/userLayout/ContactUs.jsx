@@ -32,6 +32,7 @@ const ContactUs = () => {
         method="POST"
         className="flex flex-col  max-w-[600px] w-full"
       >
+  
         <div className="pb-8">
           <p
             style={{ borderColor: currentColor }}

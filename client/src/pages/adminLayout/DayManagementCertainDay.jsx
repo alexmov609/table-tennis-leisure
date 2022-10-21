@@ -21,6 +21,10 @@ const DayManagmentCertainDay = () => {
   const [urlsArray, setUrlsArray] = useState([
     { url: process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE },
   ]);
+
+
+ 
+
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
     const settersArray = [setBasicDaysSchedule];
@@ -149,9 +153,15 @@ const DayManagmentCertainDay = () => {
               </div>
             );
           })}
-        <div className="mt-4 mb-4 flex flex-col items-center  bg-zinc-100  dark:bg-gray-800">
-          Tables
-        </div>
+      </div>
+      <div className=" flex flex-row w-1/3 items-center  hover:w-1/2  hover:scale-105 ease-in duration-300  bg-white text-slate-900 m-4 p-8 rounded-xl shadow-2xl relative">
+     
+        <p className="text-1xl font-bold py-4 mr-8 ">Amount of tables</p>
+        <input
+          className=" w-24 border-2 rounded-lg p-3  flex border-gray-300"
+          type="number"
+          name="amount"
+        />
       </div>
     </div>
   );

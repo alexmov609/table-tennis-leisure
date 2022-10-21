@@ -13,6 +13,7 @@ import {
   Inject,
   Toolbar,
   Search,
+  Selection,
 } from "@syncfusion/ej2-react-grids";
 import { contextMenuItems, corsMaker, ordersGrid } from "../../data/dummy";
 import Header from "../../components/Header";
@@ -26,11 +27,30 @@ const MyOrders = () => {
   const { orders } = useOutletContext();
 
   const editorTemplate = (args) => {
-    // Calling any setState causes trouble, but still renders
-    return <OrderTimeChoice dateOfGame={args.date_of_game} />;
+      // Calling any setState causes trouble, but still renders
+      return <OrderTimeChoice dateOfGame={args.date_of_game} />;
   };
+
+  
+   
+
   const actionBegin = (args) => {
     console.log("actionBegin", args);
+    if (
+      args.requestType === "beginEdit" &&
+      new Date(args.rowData.date_of_game )< new Date()
+    ) {
+      console.log("cancel-true");
+      args.cancel = true;
+    } 
+    if (
+      args.requestType === "beginEdit" &&
+      new Date(args.rowData.date_of_game) >= new Date()
+    ) {
+      console.log("cancel-false");
+      args.cancel = false;
+    
+    }
     // if (args.requestType === "delete") {
     //   fetch(
     //     "/deleteOrder",
@@ -41,8 +61,8 @@ const MyOrders = () => {
     //   );
     // }
   };
-
   const editing = {
+    
     allowDeleting: true,
     allowEditing: true,
     mode: "Dialog",
@@ -84,6 +104,7 @@ const MyOrders = () => {
             PdfExport,
             Toolbar,
             Search,
+            Selection,
           ]}
         />
       </GridComponent>

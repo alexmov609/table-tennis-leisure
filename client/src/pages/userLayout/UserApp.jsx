@@ -31,6 +31,7 @@ const UserApp = () => {
   const [user, setUser] = useState([]);
   const [userAbonement, setUserAbonement] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [renderUserApp, setRenderUserApp] = useState("[]");
   const [person, setPerson] = useState([]);
   const [abonementsToChoose, setAbonementsToChoose] = useState([]);
   const [unavailableTimePeriods, setUnavailableTimePeriods] = useState([]);
@@ -46,6 +47,10 @@ const UserApp = () => {
     ];
     data.forEach((el, i) => settersArray[i](el));
   }, [data]);
+
+  useEffect(() => {
+    setUrlsArray([...urlsArray])
+  }, [renderUserApp]);
   return (
     <div className={currentMode}>
       <div className="flex relative dark:bg-main-dark-bg">
@@ -100,6 +105,7 @@ const UserApp = () => {
                     person,
                     unavailableTimePeriods,
                     setPerson,
+                    setRenderUserApp,
                   }}
                 />
               ) : (

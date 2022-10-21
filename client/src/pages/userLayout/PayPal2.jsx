@@ -1,8 +1,10 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useOutletContext } from "react-router-dom";
 import { corsMaker } from "../../data/dummy";
 
 //Paypal buttons
 function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
+   const { setRenderUserApp, userAbonement } = useOutletContext();
   const createOrder = () => {
     return fetch(
       process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
@@ -39,6 +41,8 @@ function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
         body: { chosenTimePeriods, dateOfGame },
       })
     );
+
+     setRenderUserApp("costul");  
     return;
   };
   const onError = (error) => {

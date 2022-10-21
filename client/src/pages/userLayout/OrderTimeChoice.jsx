@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 import uuid from "react-uuid";
 import PayPal from "./PayPal";
@@ -8,7 +8,8 @@ import useFetch from "../../custom_hooks/useFetch";
 import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to place an order
-const OrderTimeChoice = ({ dateOfGame, abonement }) => {
+const OrderTimeChoice = ({ dateOfGame }) => {
+
   let today = new Date().toLocaleDateString().split(".");
   today = `${today[2]}-${today[1]}-${today[0]}`;
 
@@ -16,7 +17,7 @@ const OrderTimeChoice = ({ dateOfGame, abonement }) => {
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
 
   const { currentColor, currentMode, authentication } = useStateContext();
-
+  const { setRenderUserApp,userAbonement } = useOutletContext();
   const [urlsArray, setUrlsArray] = useState([
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
@@ -58,9 +59,21 @@ const OrderTimeChoice = ({ dateOfGame, abonement }) => {
     }
   };
 
-  const handleOrder = (chosenTimePeriods) => {
-    // return fetch();
+  const handleOrder = async () => {
     console.log(chosenTimePeriods);
+     await fetch(
+       process.env.REACT_APP_CREATE_ORDERS,
+       corsMaker({
+         method: "POST",
+         body: {
+           chosenTimePeriods,
+           dateOfGame,
+           name_abonement: userAbonement.name_of_abonement,
+         },
+       })
+     );
+    console.log("render");
+    setRenderUserApp("costul");       
   };
 
   return (
@@ -94,7 +107,7 @@ const OrderTimeChoice = ({ dateOfGame, abonement }) => {
       </div>
 
       {authentication.authorities === 1 &&
-      abonement.name_of_abonement === "free" ? (
+      userAbonement.name_of_abonement === "free" ? (
         <button className="pt-8">
           <PayPal2
             chosenTimePeriods={chosenTimePeriods}
@@ -105,7 +118,7 @@ const OrderTimeChoice = ({ dateOfGame, abonement }) => {
       ) : (
         <button
           className="w-64 rounded-full text-white py-4 my-4 bg-slate-500 hover:bg-slate-800 "
-          onClick={handleOrder(chosenTimePeriods)}
+          onClick={handleOrder}
         >
           Add order
         </button>
