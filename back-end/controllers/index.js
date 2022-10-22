@@ -8,6 +8,7 @@ const basicWorkScheduleController = require("./basicWorkScheduleController");
 const alteredWorkScheduleController = require("./alteredWorkScheduleController");
 const timePeriodsController = require("./timePeriodsController");
 const adminController = require("./adminController");
+const tableController = require("./tableController");
 
 const controllers = {
   ...authController,
@@ -20,6 +21,8 @@ const controllers = {
   ...alteredWorkScheduleController,
   ...timePeriodsController,
   ...adminController,
+  ...tableController,
+
 };
 
 module.exports = controllers;

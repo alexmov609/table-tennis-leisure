@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import useFetch from "../../custom_hooks/useFetch";
 import { corsMaker } from "../../data/dummy";
+import { useForm } from "react-hook-form";
+import { useOutletContext } from "react-router-dom";
 
 //Component that contains week days
 // Administrator can change work hours or block/unblock each of days
 const DayManagmentCertainDay = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor,tables,setTables } = useStateContext();
   const [basicDaysSchedule, setBasicDaysSchedule] = useState([]);
-
+  const { setRenderUserApp} = useOutletContext();
   const weekDays = [
     "Sunday",
     "Monday",
@@ -19,16 +21,38 @@ const DayManagmentCertainDay = () => {
     "Saturday",
   ];
   const [urlsArray, setUrlsArray] = useState([
-    { url: process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE },
+    {
+      url: process.env.REACT_APP_DELETE_ALTERED_WORK_SCHEDULE,
+    },
+    {
+      url: process.env.REACT_APP_READ_TABLES,
+    },
   ]);
 
 
- 
+ const {
+   register,
+   handleSubmit,
+   formState: { errors },setValue
+ } = useForm({
+   defaultValues: {
+     amount:tables?.[0].amount_of_tables
+   },
+ });
 
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    const settersArray = [setBasicDaysSchedule];
-    data.forEach((el, i) => settersArray[i](el));
+    const settersArray = [
+      setBasicDaysSchedule,
+      setValue,
+    ];
+    data.forEach((el, i) => {
+      if(i===1){
+        settersArray[i]("amount",`${el[0].amount_of_tables}`)
+      }else{
+    settersArray[i](el);
+      }
+  });
   }, [data]);
 
   const handleChange = ({ target }, index) => {
@@ -74,7 +98,7 @@ const DayManagmentCertainDay = () => {
     return basicDaysSchedule[i].close==='-----';
   };
 
-  const handleSubmit = (i) => {
+  const handleSubmitt = (i) => {
     fetch(
       process.env.REACT_APP_UPDATE_CERTAIN_DAY_SCHEDULE_AND_SEND_VOUCHERS,
       corsMaker({
@@ -86,6 +110,22 @@ const DayManagmentCertainDay = () => {
         },
       })
     );
+  };
+
+  const onSubmit = async (data) => {
+    await fetch(process.env.REACT_APP_UPDATE_TABLES,
+      corsMaker({
+         method: "POST",
+         body: {
+           amount:data.amount
+         },
+       })).then((response) => {
+      if (response.ok) {
+        console.log("Updated Successfully");
+      }
+    });
+    setValue("amount",data.amount)
+    console.log(data);
   };
 
   return (
@@ -139,7 +179,7 @@ const DayManagmentCertainDay = () => {
                 <button
                   style={{ backgroundColor: currentColor }}
                   className="w-full py-4 my-4 text-white hover:scale-105 ease-in duration-300"
-                  onClick={() => handleSubmit(i)}
+                  onClick={() => handleSubmitt(i)}
                 >
                   Submit
                 </button>
@@ -154,14 +194,27 @@ const DayManagmentCertainDay = () => {
             );
           })}
       </div>
-      <div className=" flex flex-row w-1/3 items-center  hover:w-1/2  hover:scale-105 ease-in duration-300  bg-white text-slate-900 m-4 p-8 rounded-xl shadow-2xl relative">
-     
-        <p className="text-1xl font-bold py-4 mr-8 ">Amount of tables</p>
-        <input
-          className=" w-24 border-2 rounded-lg p-3  flex border-gray-300"
-          type="number"
-          name="amount"
-        />
+      <div className=" w-1/3 items-center  hover:w-1/2  hover:scale-105 ease-in duration-300  bg-white text-slate-900 m-4 p-8 rounded-xl shadow-2xl relative">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-row "
+          action=""
+          method="POST"
+        >
+          <p className="text-1xl font-bold py-4 mr-8 ">Amount of tables</p>
+          <input
+            className=" w-24 border-2 rounded-lg p-3  flex border-gray-300"
+            type="number"
+            name="amount"
+            {...register("amount", { min: 1 })}
+          />
+          <button
+            style={{ backgroundColor: currentColor }}
+            className="w-24 ml-2 rounded-full "
+          >
+            Update Tables
+          </button>
+        </form>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ import { useOutletContext } from "react-router-dom";
 //Component that gives to an user an option to browse its orders
 //User can also change/delete any of its orders
 const MyOrders = () => {
-  const { orders } = useOutletContext();
+  const { orders, setOrders } = useOutletContext();
 
   const editorTemplate = (args) => {
       // Calling any setState causes trouble, but still renders
@@ -44,22 +44,25 @@ const MyOrders = () => {
       args.cancel = true;
     } 
     if (
-      args.requestType === "beginEdit" &&
-      new Date(args.rowData.date_of_game) >= new Date()
+      args.requestType === "delete"
     ) {
-      console.log("cancel-false");
-      args.cancel = false;
-    
+      if (new Date(args.data[0].date_of_game) > new Date())
+        {
+          setOrders((prev) =>
+            prev.filter(
+              (el) => el.date_date_of_game !== args.data[0].date_of_game
+            )
+          );
+          fetch(
+          "/deleteOrder",
+          corsMaker({
+            method: "POST",
+            body: { order_id: args.data[0].order_id },
+          })
+        );}else{
+          args.cancel = true;
+        }
     }
-    // if (args.requestType === "delete") {
-    //   fetch(
-    //     "/deleteOrder",
-    //     corsMaker({
-    //       method: "POST",
-    //       body: { order_id: args.data[0].order_id },
-    //     })
-    //   );
-    // }
   };
   const editing = {
     

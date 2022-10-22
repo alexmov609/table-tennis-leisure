@@ -24,6 +24,7 @@ const modelsArray = [
   require("./models/basicWorkSchedule"),
   require("./models/alteredWorkSchedule"),
   require("./models/timePeriods"),
+  require("./models/table"),
 ];
 
 for (const model of modelsArray) {

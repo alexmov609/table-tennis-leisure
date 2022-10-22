@@ -9,7 +9,7 @@ import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to place an order
 const OrderTimeChoice = ({ dateOfGame }) => {
-
+console.log(dateOfGame);
   let today = new Date().toLocaleDateString().split(".");
   today = `${today[2]}-${today[1]}-${today[0]}`;
 
@@ -17,7 +17,7 @@ const OrderTimeChoice = ({ dateOfGame }) => {
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
 
   const { currentColor, currentMode, authentication } = useStateContext();
-  const { setRenderUserApp,userAbonement } = useOutletContext();
+  const { setRenderUserApp,userAbonement,orders } = useOutletContext();
   const [urlsArray, setUrlsArray] = useState([
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
@@ -73,8 +73,12 @@ const OrderTimeChoice = ({ dateOfGame }) => {
        })
      );
     console.log("render");
-    setRenderUserApp("costul");       
+    setRenderUserApp(prev=>!prev);       
   };
+
+  const userCantChoose = (startTime)=>{
+    return !!orders.find(({date_of_game,start_time})=> date_of_game===dateOfGame&&startTime===start_time)
+  }
 
   return (
     <div className="min-w-full flex flex-col items-center">
@@ -91,11 +95,22 @@ const OrderTimeChoice = ({ dateOfGame }) => {
                 <button
                   style={{
                     backgroundColor:
-                      c === 5 ? "Grey" : backgroundColor || currentColor,
+                      c === 5
+                        ? "Grey"
+                        : authentication.authorities === 1 &&
+                          userCantChoose(start_time)
+                        ? "orange"
+                        : backgroundColor || currentColor,
                   }}
                   name={time_period_id}
                   key={uuid()}
-                  disabled={c === 5 ? true : false}
+                  disabled={
+                    c === 5 ||
+                    (authentication.authorities === 1 &&
+                      userCantChoose(start_time))
+                      ? true
+                      : false
+                  }
                   className="w-full shadow-xl shadow-gray-400 p-4 bg-slate-700 text-gray-100 mt-4 hover:scale-105 ease-in duration-300 "
                   onClick={(e) => handleClick(e, time_period_id)}
                 >

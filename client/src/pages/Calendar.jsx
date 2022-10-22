@@ -50,7 +50,8 @@ const Calendar = (props) => {
   const editorTemplate = (args) => {
     let dateOfGame;
     if (args?.StartTime) {
-      const day = args.StartTime.getDate();
+      let day = args.StartTime.getDate();
+      day=day<10?`0${day}`:day;
       const month = args.StartTime.getMonth() + 1;
       const year = args.StartTime.getYear() + 1900;
       dateOfGame = `${year}-${month}-${day}`;

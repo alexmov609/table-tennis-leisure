@@ -11,19 +11,20 @@ const alteredWorkScheduleRoutes = require("./alteredWorkScheduleRoutes");
 const adminRoutes = require("./adminRoutes");
 const payPalRoutes = require("./payPalRoutes");
 const verifiers = require("../middleware");
+const tableRoutes = require("./tableRoute");
 const router = express.Router();
 
 const routersInitializer = (router) => {
   authRoutes(router);
   router.use(verifiers.verifyJWT);
   userRoutes(router);
+  tableRoutes(router);
   abonementRoutes(router);
   ordersRoutes(router);
   personRoutes(router);
   miscellaneousRoutes(router);
   basicWorkScheduleRoutes(router);
   alteredWorkScheduleRoutes(router);
-  // timePeriodsRoutes(router);
   payPalRoutes(router);
   router.use(verifiers.isAdmin);
   adminRoutes(router);

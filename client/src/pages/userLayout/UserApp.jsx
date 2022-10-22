@@ -31,7 +31,7 @@ const UserApp = () => {
   const [user, setUser] = useState([]);
   const [userAbonement, setUserAbonement] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [renderUserApp, setRenderUserApp] = useState("[]");
+  const [renderUserApp, setRenderUserApp] = useState(true);
   const [person, setPerson] = useState([]);
   const [abonementsToChoose, setAbonementsToChoose] = useState([]);
   const [unavailableTimePeriods, setUnavailableTimePeriods] = useState([]);
@@ -106,6 +106,7 @@ const UserApp = () => {
                     unavailableTimePeriods,
                     setPerson,
                     setRenderUserApp,
+                    setOrders,
                   }}
                 />
               ) : (

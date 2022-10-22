@@ -19,6 +19,7 @@ const AdminApp = () => {
     currentMode,
   } = useStateContext();
 
+   const [renderUserApp, setRenderUserApp] = useState(true);
   const [allOrderedTimePeriods, setAllOrderedTimePeriods] = useState([]);
   const [urlsArray, setUrlsArray] = useState([
     { url: process.env.REACT_APP_READ_ALL_ORDERS },
@@ -77,6 +78,8 @@ const AdminApp = () => {
                 <Outlet
                   context={{
                     allOrderedTimePeriods,
+                    renderUserApp,
+                    setRenderUserApp,
                   }}
                 />
               ) : (

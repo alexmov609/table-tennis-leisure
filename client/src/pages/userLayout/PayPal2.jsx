@@ -5,6 +5,7 @@ import { corsMaker } from "../../data/dummy";
 //Paypal buttons
 function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
    const { setRenderUserApp, userAbonement } = useOutletContext();
+   console.log(userAbonement);
   const createOrder = () => {
     return fetch(
       process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
@@ -38,7 +39,7 @@ function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
       process.env.REACT_APP_CREATE_ORDERS,
       corsMaker({
         method: "POST",
-        body: { chosenTimePeriods, dateOfGame },
+        body: { chosenTimePeriods, dateOfGame,name_abonement:userAbonement.name_of_abonement },
       })
     );
 

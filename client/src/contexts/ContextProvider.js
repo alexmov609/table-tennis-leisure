@@ -24,8 +24,10 @@ export const ContextProvider = ({ children }) => {
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
   const [authentication, setAuthentication] = useState({});
-
+  const [tables,setTables]=useState();
   const [dateOfGame, setDateOfGame] = useState(today);
+
+
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -69,6 +71,8 @@ export const ContextProvider = ({ children }) => {
         authentication,
         setAuthentication,
         today,
+        tables,
+        setTables,
       }}
     >
       {children}
