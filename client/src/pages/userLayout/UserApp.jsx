@@ -49,7 +49,7 @@ const UserApp = () => {
   }, [data]);
 
   useEffect(() => {
-    setUrlsArray([...urlsArray])
+    setUrlsArray([...urlsArray]);
   }, [renderUserApp]);
   return (
     <div className={currentMode}>
@@ -107,6 +107,7 @@ const UserApp = () => {
                     setPerson,
                     setRenderUserApp,
                     setOrders,
+                    setUrlsArray,
                   }}
                 />
               ) : (
