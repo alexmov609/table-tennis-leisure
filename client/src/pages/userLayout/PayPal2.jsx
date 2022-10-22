@@ -4,8 +4,8 @@ import { corsMaker } from "../../data/dummy";
 
 //Paypal buttons
 function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
-   const { setRenderUserApp, userAbonement } = useOutletContext();
-   console.log(userAbonement);
+  const { setRenderUserApp, userAbonement } = useOutletContext();
+  console.log(userAbonement);
   const createOrder = () => {
     return fetch(
       process.env.REACT_APP_PROCESS_PAY_PAL_ORDER,
@@ -39,11 +39,15 @@ function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
       process.env.REACT_APP_CREATE_ORDERS,
       corsMaker({
         method: "POST",
-        body: { chosenTimePeriods, dateOfGame,name_abonement:userAbonement.name_of_abonement },
+        body: {
+          chosenTimePeriods,
+          dateOfGame,
+          name_abonement: userAbonement.name_of_abonement,
+        },
       })
     );
 
-     setRenderUserApp("costul");  
+    setRenderUserApp("costul");
     return;
   };
   const onError = (error) => {
@@ -63,6 +67,7 @@ function PayPal2({ chosenTimePeriods, disabled, dateOfGame }) {
         onApprove={onApprove}
         onError={onError}
         forceReRender={[chosenTimePeriods]}
+        fundingSource={"paypal"}
       />
     </PayPalScriptProvider>
   );

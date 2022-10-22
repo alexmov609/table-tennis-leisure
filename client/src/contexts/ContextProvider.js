@@ -13,8 +13,8 @@ const initialState = {
 //every value passed throw here they all be passed throw al of the components inside of our app.
 //you always return children-its every context you wrap here will be return the actual page.it return underline component below that context.
 export const ContextProvider = ({ children }) => {
-  let today = new Date().toLocaleDateString().split(".");
-  today = `${today[2]}-${today[1]}-${today[0]}`;
+  let today = new Date().toLocaleDateString().split("/");
+  today = `${today[2]}-${today[0]}-${today[1]}`;
   const [activeMenu, setActiveMenu] = useState(true);
 
   const [isClicked, setIsClicked] = useState(initialState);
@@ -24,10 +24,8 @@ export const ContextProvider = ({ children }) => {
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
   const [authentication, setAuthentication] = useState({});
-  const [tables,setTables]=useState();
+  const [tables, setTables] = useState();
   const [dateOfGame, setDateOfGame] = useState(today);
-
-
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);

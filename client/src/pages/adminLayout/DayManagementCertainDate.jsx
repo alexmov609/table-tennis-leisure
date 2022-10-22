@@ -11,7 +11,7 @@ const DayManagementCertainDate = () => {
   const [dateOfGame, setDateOfGame] = useState(today);
   const [blockedDates, setBlockedDates] = useState([]);
   const [filteredTimePeriods, setFilteredTimePeriods] = useState([]);
-
+  const [tables, setTables] = useState(0);
   const [urlState, dispatch] = useReducer(reducer, [
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
@@ -24,11 +24,14 @@ const DayManagementCertainDate = () => {
       url: process.env.REACT_APP_READ_ALTERED_BLOCKED_DATES,
       cors: null,
     },
+    {
+      url: process.env.REACT_APP_READ_TABLES,
+    },
   ]);
 
   const { data, fetchErr, isLoading } = useFetch(urlState);
   useEffect(() => {
-    const settersArray = [setFilteredTimePeriods, setBlockedDates];
+    const settersArray = [setFilteredTimePeriods, setBlockedDates, setTables];
     data.forEach((el, i) => settersArray[i](el));
   }, [data]);
   useEffect(() => {
@@ -120,23 +123,27 @@ const DayManagementCertainDate = () => {
               <h2 className="text-2xl font-bold ">Tables</h2>
               <h2 className="text-2xl font-bold ">Time periods</h2>
             </div>
-            {filteredTimePeriods.map(({ start_time, end_time, c }) => {
-              return (
-                <div key={uuid()} className="flex flex-row">
-                  <p className="w-full p-1 mt-0.5 text-center text-xl font-bold">
-                    {c ? c : 0}{" "}
-                  </p>
-                  <button
-                    className="w-full p-1 bg-slate-700 hover:bg-slate-500 text-gray-100 mt-0.5"
-                    style={{
-                      backgroundColor: c === 5 ? "Grey" : currentColor,
-                    }}
-                  >
-                    {`${start_time}-${end_time}`}
-                  </button>
-                </div>
-              );
-            })}
+            {!isLoading &&
+              filteredTimePeriods.map(({ start_time, end_time, c }) => {
+                return (
+                  <div key={uuid()} className="flex flex-row">
+                    <p className="w-full p-1 mt-0.5 text-center text-xl font-bold">
+                      {c ? c : 0}{" "}
+                    </p>
+                    <button
+                      className="w-full p-1 bg-slate-700 hover:bg-slate-500 text-gray-100 mt-0.5"
+                      style={{
+                        backgroundColor:
+                          c === tables[0].amount_of_tables
+                            ? "Grey"
+                            : currentColor,
+                      }}
+                    >
+                      {`${start_time}-${end_time}`}
+                    </button>
+                  </div>
+                );
+              })}
           </div>
           <div className="flex flex-col mx-3">
             {new Date(dateOfGame) > new Date() && (

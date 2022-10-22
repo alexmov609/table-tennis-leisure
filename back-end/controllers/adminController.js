@@ -64,8 +64,8 @@ const readCustomersAges = async (request, response) => {
           .send("readCustomersAges. !readCustomersAges");
       }
       response.json(
-        customersAges.map(({x,y}) => {
-          return { y, text: ` Amount: ${y}`,x:`${x} years old` };
+        customersAges.map(({ x, y }) => {
+          return { y, text: ` Amount: ${y}`, x: `${x} years old` };
         })
       );
     });
@@ -172,9 +172,7 @@ const readUsersDataByPayment = async (request, response) => {
       if (!profit) {
         return response.status(400).send("readProfit. !readProfit");
       }
-      response.json(
-       profit
-      );
+      response.json(profit);
     });
 };
 
@@ -237,15 +235,15 @@ const updateCertainDayScheduleAndSendVouchers = async (request, response) => {
           );
       }
 
-      // services.sendVouchers(updateCertainDayScheduleAndSendVouchers);
+      services.sendVouchers(updateCertainDayScheduleAndSendVouchers);
       response.json(updateCertainDayScheduleAndSendVouchers);
-      // orders.destroy({
-      //   where: {
-      //     order_id: updateCertainDayScheduleAndSendVouchers.map(
-      //       ({ orders }) => orders.order_id
-      //     ),
-      //   },
-      // });
+      orders.destroy({
+        where: {
+          order_id: updateCertainDayScheduleAndSendVouchers.map(
+            ({ orders }) => orders.order_id
+          ),
+        },
+      });
     });
 };
 
@@ -284,13 +282,13 @@ const createCertainDateSchedule = async (request, response) => {
 
       services.sendVouchers(createCertainDateSchedule);
       response.json(createCertainDateSchedule);
-      // orders.destroy({
-      //   where: {
-      //     order_id: updateCertainDayScheduleAndSendVouchers.map(
-      //       ({ orders }) => orders.order_id
-      //     ),
-      //   },
-      // });
+      orders.destroy({
+        where: {
+          order_id: createCertainDateSchedule.map(
+            ({ orders }) => orders.order_id
+          ),
+        },
+      });
     });
 };
 

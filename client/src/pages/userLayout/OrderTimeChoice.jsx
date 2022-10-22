@@ -9,15 +9,15 @@ import { corsMaker } from "../../data/dummy";
 
 //Component that gives to an user an option to place an order
 const OrderTimeChoice = ({ dateOfGame }) => {
-console.log(dateOfGame);
+  console.log(dateOfGame);
   let today = new Date().toLocaleDateString().split(".");
   today = `${today[2]}-${today[1]}-${today[0]}`;
 
   const [chosenTimePeriods, setChosenTimePeriods] = useState([]);
   const [filteredtimePeriods, setFilteredtimePeriods] = useState([]);
-
+  const [tables, setTables] = useState(0);
   const { currentColor, currentMode, authentication } = useStateContext();
-  const { setRenderUserApp,userAbonement,orders } = useOutletContext();
+  const { setRenderUserApp, userAbonement, orders } = useOutletContext();
   const [urlsArray, setUrlsArray] = useState([
     {
       url: process.env.REACT_APP_READ_FILTERED_TIME_PERIODS,
@@ -29,10 +29,13 @@ console.log(dateOfGame);
         },
       }),
     },
+    {
+      url: process.env.REACT_APP_READ_TABLES,
+    },
   ]);
   const { data, fetchErr, isLoading } = useFetch(urlsArray);
   useEffect(() => {
-    const settersArray = [setFilteredtimePeriods];
+    const settersArray = [setFilteredtimePeriods, setTables];
     data.forEach((el, i) => settersArray[i](el));
   }, [data]);
 
@@ -61,24 +64,27 @@ console.log(dateOfGame);
 
   const handleOrder = async () => {
     console.log(chosenTimePeriods);
-     await fetch(
-       process.env.REACT_APP_CREATE_ORDERS,
-       corsMaker({
-         method: "POST",
-         body: {
-           chosenTimePeriods,
-           dateOfGame,
-           name_abonement: userAbonement.name_of_abonement,
-         },
-       })
-     );
+    await fetch(
+      process.env.REACT_APP_CREATE_ORDERS,
+      corsMaker({
+        method: "POST",
+        body: {
+          chosenTimePeriods,
+          dateOfGame,
+          name_abonement: userAbonement.name_of_abonement,
+        },
+      })
+    );
     console.log("render");
-    setRenderUserApp(prev=>!prev);       
+    setRenderUserApp((prev) => !prev);
   };
 
-  const userCantChoose = (startTime)=>{
-    return !!orders.find(({date_of_game,start_time})=> date_of_game===dateOfGame&&startTime===start_time)
-  }
+  const userCantChoose = (startTime) => {
+    return !!orders.find(
+      ({ date_of_game, start_time }) =>
+        date_of_game === dateOfGame && startTime === start_time
+    );
+  };
 
   return (
     <div className="min-w-full flex flex-col items-center">
@@ -95,7 +101,7 @@ console.log(dateOfGame);
                 <button
                   style={{
                     backgroundColor:
-                      c === 5
+                      c === tables[0].amount_of_tables
                         ? "Grey"
                         : authentication.authorities === 1 &&
                           userCantChoose(start_time)
@@ -105,7 +111,7 @@ console.log(dateOfGame);
                   name={time_period_id}
                   key={uuid()}
                   disabled={
-                    c === 5 ||
+                    c === tables[0].amount_of_tabless ||
                     (authentication.authorities === 1 &&
                       userCantChoose(start_time))
                       ? true
