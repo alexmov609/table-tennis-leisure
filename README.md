@@ -1,5 +1,5 @@
 # Table-tennis-leisure
-Diploma project for National School for Practical Engineers at the Technion /  פרויקט גמר הנדסאים טכניון
+Diploma project for National School for Practical Engineers at the Technion
 
 Full stack project. 
 Front-end programming languages: HTML, CSS, JavaScript.
